@@ -1,0 +1,61 @@
+# ── HTTPS REDIRECT ──
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── BLOCK DIRECTORY BROWSING ──
+Options -Indexes
+
+# ── HIDE SERVER INFO ──
+ServerSignature Off
+Header unset X-Powered-By
+Header always unset X-Powered-By
+
+# ── SECURITY HEADERS ──
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-XSS-Protection "1; mode=block"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+# ── BLOCK BAD BOTS & SCANNERS ──
+RewriteCond %{HTTP_USER_AGENT} (masscan|sqlmap|nikto|nmap|havij|acunetix|nessus|metasploit|zgrab|python-requests|curl|wget|libwww) [NC]
+RewriteRule .* - [F,L]
+
+# ── BLOCK ACCESS TO HIDDEN FILES ──
+<FilesMatch "^\.">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# ── BLOCK SENSITIVE FILE ACCESS ──
+<FilesMatch "\.(sql|db|log|env|bak|config|ini|sh|bash)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# ── PREVENT HOTLINKING OF IMAGES ──
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https://(www\.)?daminiestate\.ae [NC]
+RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F,L]
+
+# ── BLOCK COMMON ATTACK PATTERNS ──
+RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00) [NC]
+RewriteRule .* - [F,L]
+
+# ── BLOCK XML-RPC & COMMON EXPLOIT PATHS ──
+RewriteRule ^xmlrpc\.php$ - [F,L]
+RewriteRule ^wp-login\.php$ - [F,L]
+RewriteRule ^wp-admin/ - [F,L]
+
+# ── LIMIT FILE UPLOAD SIZE ──
+LimitRequestBody 10240000
+
+# ── CACHE STATIC ASSETS ──
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|css|js|woff|woff2)$">
+  Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
