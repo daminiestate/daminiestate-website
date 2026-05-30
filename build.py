@@ -263,6 +263,7 @@ def build_page(page):
     # Performance: async-decode + lazy-load images (skip those marked data-eager)
     html = re.sub(r'(<img\b(?![^>]*\bdecoding=)[^>]*)>', r'\1 decoding="async">', html)
     html = re.sub(r'(<img\b(?![^>]*\b(loading|fetchpriority)=)(?![^>]*\bdata-eager)[^>]*)>', r'\1 loading="lazy">', html)
+    html = upgrade_images_to_webp(html)
     html = minify_html(html)
 
     out = slug_to_output_path(page["slug"])
