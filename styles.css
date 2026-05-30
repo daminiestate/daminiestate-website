@@ -451,3 +451,8 @@ button[disabled] { opacity: 0.6; cursor: progress; }
   h1, h2, h3 { color: #000 !important; page-break-after: avoid; }
   img { max-width: 100% !important; }
 }
+
+/* ── Blog article heading (replaces repeated inline styles) ─────────────── */
+.article-eyebrow { margin-bottom: 16px; }
+.article-eyebrow a { color: var(--tan2); }
+.article-h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); color: var(--cr); line-height: 1.15; margin-bottom: 24px; }
