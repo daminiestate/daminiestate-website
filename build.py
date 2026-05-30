@@ -139,6 +139,51 @@ def minify_html(html: str) -> str:
     return html
 
 
+def page_type_jsonld(canonical: str, title: str, description: str) -> str:
+    """Per-page schema.org type to enrich search results."""
+    name = title.split(" — ")[0].split(" · ")[0].strip()
+    url = SITE + canonical
+    payload = None
+    if canonical == "/contact":
+        payload = {
+            "@context": "https://schema.org", "@type": "ContactPage",
+            "name": name, "url": url, "description": description,
+            "mainEntity": {
+                "@type": "RealEstateAgent", "@id": f"{SITE}#org", "name": "Damini Estate",
+                "contactPoint": {
+                    "@type": "ContactPoint", "telephone": "+971585720882",
+                    "email": "info@daminiestate.ae", "contactType": "sales",
+                    "areaServed": "AE", "availableLanguage": ["English", "Russian"],
+                },
+            },
+        }
+    elif canonical == "/about":
+        payload = {"@context": "https://schema.org", "@type": "AboutPage",
+                   "name": name, "url": url, "description": description,
+                   "about": {"@id": f"{SITE}#org"}}
+    elif canonical == "/properties":
+        payload = {"@context": "https://schema.org", "@type": "CollectionPage",
+                   "name": name, "url": url, "description": description,
+                   "about": {"@id": f"{SITE}#org"},
+                   "isPartOf": {"@id": f"{SITE}#website"}}
+    elif canonical == "/services":
+        payload = {"@context": "https://schema.org", "@type": "WebPage",
+                   "name": name, "url": url, "description": description,
+                   "about": {"@id": f"{SITE}#org"},
+                   "mainEntity": {"@type": "ItemList", "itemListElement": [
+                       {"@type": "ListItem", "position": i + 1, "name": s}
+                       for i, s in enumerate([
+                           "Residential Sales", "Off-Plan Investments", "Commercial Real Estate",
+                           "Investment Advisory", "Property Management", "Relocation & Golden Visa"])]}}
+    elif canonical == "/insights":
+        payload = {"@context": "https://schema.org", "@type": "CollectionPage",
+                   "name": name, "url": url, "description": description,
+                   "isPartOf": {"@id": f"{SITE}#website"}}
+    if not payload:
+        return ""
+    return f'<script type="application/ld+json">\n{json.dumps(payload, indent=2)}\n</script>'
+
+
 def mark_active_nav(header_html: str, canonical: str) -> str:
     """Add aria-current="page" to the nav link whose href matches this page.
     Matches the section root so e.g. /blog/... highlights Insights."""
@@ -159,8 +204,8 @@ def mark_active_nav(header_html: str, canonical: str) -> str:
 
 def build_page(page):
     head_extra = page.get("head_extra", "") or JSONLD_ORG
-    if page.get("noindex"):
-        head_extra = NOINDEX_META + "\n" + head_extra
+    robots = ("noindex, nofollow" if page.get("noindex")
+              else "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1")
     crumb = breadcrumb_jsonld(page["canonical"], page["title"])
     if crumb:
         head_extra += "\n" + crumb
@@ -168,6 +213,9 @@ def build_page(page):
     faq = faqpage_jsonld(body)
     if faq:
         head_extra += "\n" + faq
+    page_schema = page_type_jsonld(page["canonical"], page["title"], page["description"])
+    if page_schema:
+        head_extra += "\n" + page_schema
 
     # Per-page resource preload (e.g. the LCP hero image) for faster first paint.
     for pl in page.get("preload", []):
@@ -178,6 +226,7 @@ def build_page(page):
             .replace("{{DESCRIPTION}}", page["description"])
             .replace("{{CANONICAL}}", page["canonical"])
             .replace("{{OG_IMAGE}}", page.get("og_image", DEFAULT_OG))
+            .replace("{{ROBOTS}}", robots)
             .replace("{{HEAD_EXTRA}}", head_extra))
 
     # Mark the current page in the nav for a11y + UX (aria-current + active style).
@@ -210,11 +259,11 @@ PAGES = [
 
     {"slug": "services.html", "content": "services", "canonical": "/services",
      "title": "Services & Investor Tools — Damini Estate Dubai",
-     "description": "Residential sales, off-plan investment, commercial real estate, investment advisory, property management, and Golden Visa relocation — plus free Dubai mortgage, yield, ROI, and service-charge calculators."},
+     "description": "Dubai residential sales, off-plan, commercial, investment advisory, property management and Golden Visa relocation — plus free mortgage, yield and ROI calculators."},
 
     {"slug": "properties.html", "content": "properties", "canonical": "/properties",
      "title": "Featured Dubai Properties — Damini Estate",
-     "description": "A curated selection of Dubai properties for sale and rent across Business Bay, Downtown, Dubai Hills, MBR City, Palm Jumeirah and more. View live listings via our verified Bayut portfolio.",
+     "description": "A curated selection of Dubai property for sale and rent — Business Bay, Downtown, Dubai Hills, MBR City, Palm Jumeirah and more. View live listings on our verified Bayut profile.",
      "og_image": "/assets/img/og-properties.jpg"},
 
     {"slug": "contact.html", "content": "contact", "canonical": "/contact",
@@ -223,7 +272,7 @@ PAGES = [
 
     {"slug": "insights.html", "content": "insights", "canonical": "/insights",
      "title": "Dubai Property Insights — Damini Estate",
-     "description": "Guides and market insight for buying and investing in Dubai real estate: off-plan strategy, rental yields, the Golden Visa, service charges, and how the market really works."},
+     "description": "Clear guides to buying and investing in Dubai real estate: off-plan strategy, rental yields, the Golden Visa, service charges, and how the market really works."},
 
     {"slug": "privacy.html", "content": "privacy", "canonical": "/privacy", "noindex": True,
      "title": "Privacy Policy — Damini Estate",
