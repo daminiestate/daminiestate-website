@@ -436,3 +436,18 @@ button[disabled] { opacity: 0.6; cursor: progress; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; }
 }
+
+/* ── Print ──────────────────────────────────────────────────────────────── */
+@media print {
+  *, *::before, *::after { background: #fff !important; color: #000 !important; box-shadow: none !important; }
+  .nav, .mobile-nav, .wa-float, #loader, .marquee-wrap, .dev-strip-section,
+  .cta-banner, .newsletter, .final-cta, .skip-nav { display: none !important; }
+  body { font-size: 12pt; line-height: 1.5; }
+  main { padding-top: 0 !important; }
+  a { color: #000 !important; text-decoration: underline; }
+  /* expose destination of meaningful links on paper */
+  .prose a[href^="http"]::after, .contact-block a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; word-break: break-all; }
+  .page-hero, .sec { padding: 12pt 0 !important; }
+  h1, h2, h3 { color: #000 !important; page-break-after: avoid; }
+  img { max-width: 100% !important; }
+}
