@@ -139,6 +139,24 @@ def minify_html(html: str) -> str:
     return html
 
 
+def mark_active_nav(header_html: str, canonical: str) -> str:
+    """Add aria-current="page" to the nav link whose href matches this page.
+    Matches the section root so e.g. /blog/... highlights Insights."""
+    if canonical in ("/", ""):
+        target = "/"
+    else:
+        seg = canonical.strip("/").split("/")[0]
+        target = f"/{seg}/"
+    # /blog articles live under the Insights nav item
+    if canonical.startswith("/blog"):
+        target = "/insights/"
+    def repl(m):
+        return m.group(0) + ' aria-current="page"'
+    # add the attribute right after href="<target>"
+    return re.sub(r'href="' + re.escape(target) + r'"(?![^>]*aria-current)',
+                  lambda m: m.group(0) + ' aria-current="page"', header_html)
+
+
 def build_page(page):
     head_extra = page.get("head_extra", "") or JSONLD_ORG
     if page.get("noindex"):
@@ -162,7 +180,10 @@ def build_page(page):
             .replace("{{OG_IMAGE}}", page.get("og_image", DEFAULT_OG))
             .replace("{{HEAD_EXTRA}}", head_extra))
 
-    html = "\n".join([head, HEADER, '<main id="main">', body, '</main>', FOOTER, CHAT,
+    # Mark the current page in the nav for a11y + UX (aria-current + active style).
+    header = mark_active_nav(HEADER, page["canonical"])
+
+    html = "\n".join([head, header, '<main id="main">', body, '</main>', FOOTER, CHAT,
                       "</body>\n</html>\n"])
 
     # Performance: async-decode + lazy-load images (skip those marked data-eager)

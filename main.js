@@ -246,7 +246,14 @@
       var hp = form.querySelector('input[name="website"]');
       if (hp && hp.value) { show('ok', form.getAttribute('data-ok') || 'Thank you.'); form.reset(); return; }
       var email = form.querySelector('input[type="email"]');
-      if (email && !EMAIL_RE.test(email.value)) { show('err', 'Please enter a valid email address.'); email.focus(); return; }
+      if (email && !EMAIL_RE.test(email.value)) {
+        email.setAttribute('aria-invalid', 'true');
+        if (msg) email.setAttribute('aria-describedby', msg.id || (msg.id = 'form-msg-' + Math.random().toString(36).slice(2, 8)));
+        show('err', 'Please enter a valid email address.');
+        email.focus();
+        return;
+      }
+      if (email) email.removeAttribute('aria-invalid');
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
       fetch(form.getAttribute('action'), { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
         .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
