@@ -469,3 +469,65 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .u-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
 .u-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 .u-404 { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; }
+
+/* ── Breadcrumb ─────────────────────────────────────────────────────────── */
+.breadcrumb { padding: calc(var(--nav-h) + 24px) var(--gutter) 0; max-width: var(--maxw); margin-inline: auto; }
+.breadcrumb ol { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cr-50); }
+.breadcrumb li { display: flex; align-items: center; gap: 8px; }
+.breadcrumb li::after { content: "›"; color: var(--tan2); }
+.breadcrumb li:last-child::after { content: none; }
+.breadcrumb a { color: var(--cr-60); }
+.breadcrumb a:hover { color: var(--sand); }
+.breadcrumb [aria-current="page"] { color: var(--sand); }
+
+/* ── Process steps ──────────────────────────────────────────────────────── */
+.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; border: 1px solid var(--hrlt); }
+.step { padding: 36px 28px; border: 1px solid var(--hrlt); background: var(--br); display: flex; flex-direction: column; gap: 12px; }
+.step-n { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; color: var(--tan2); line-height: 1; }
+.step h3 { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; color: var(--cr); }
+.step p { font-size: 0.72rem; line-height: 1.8; color: var(--cr-60); }
+
+/* ── Feature grid (why-us / why-Dubai) ──────────────────────────────────── */
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.feature { border-top: 2px solid var(--tan2); padding-top: 20px; }
+.feature h3 { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--cr); margin-bottom: 8px; }
+.feature p { font-size: 0.74rem; line-height: 1.85; color: var(--cr-60); }
+
+/* ── Area cards ─────────────────────────────────────────────────────────── */
+.area-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.area-card { position: relative; overflow: hidden; display: block; border: 1px solid var(--hrlt); background: var(--br2); transition: border-color 0.3s, transform 0.3s; }
+.area-card:hover { border-color: var(--sand); transform: translateY(-3px); }
+.area-card-body { padding: 24px; }
+.area-card h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--cr); margin-bottom: 6px; }
+.area-card p { font-size: 0.7rem; line-height: 1.75; color: var(--cr-60); }
+.area-card .area-more { display: block; margin-top: 12px; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); }
+
+/* ── Testimonials ───────────────────────────────────────────────────────── */
+.quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.quote { border: 1px solid var(--hrlt); padding: 32px 28px; background: var(--br); display: flex; flex-direction: column; gap: 16px; }
+.quote-text { font-family: var(--serif); font-style: italic; font-size: 1.1rem; line-height: 1.5; color: var(--cr2); }
+.quote-by { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tan2); margin-top: auto; }
+.quote-stars { color: var(--sand); letter-spacing: 2px; font-size: 0.8rem; }
+
+/* ── Service detail intro ───────────────────────────────────────────────── */
+.svc-intro { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(32px, 6vw, 72px); align-items: start; }
+.svc-points { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.svc-points li { padding-left: 26px; position: relative; font-size: 0.78rem; line-height: 1.8; color: var(--cr2); }
+.svc-points li::before { content: "›"; position: absolute; left: 0; color: var(--tan2); font-size: 1rem; }
+.svc-aside { border: 1px solid var(--hrlt); background: var(--br2); padding: 32px; }
+.svc-aside h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; color: var(--cr); margin-bottom: 14px; }
+.svc-aside p { font-size: 0.72rem; line-height: 1.8; color: var(--cr-60); margin-bottom: 18px; }
+
+@media (max-width: 980px) {
+  .steps { grid-template-columns: 1fr 1fr; }
+  .feature-grid, .area-grid, .quote-grid { grid-template-columns: 1fr 1fr; }
+  .svc-intro { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .steps, .feature-grid, .area-grid, .quote-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Service cards as links ──────────────────────────────────────────────── */
+.svc-item { text-decoration: none; }
+.svc-item .svc-more { margin-top: auto; padding-top: 8px; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); opacity: 0; transition: opacity 0.3s; }
+.svc-item:hover .svc-more, .svc-item:focus-visible .svc-more { opacity: 1; }

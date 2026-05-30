@@ -225,6 +225,24 @@ def page_type_jsonld(canonical: str, title: str, description: str) -> str:
     return f'<script type="application/ld+json">\n{json.dumps(payload, indent=2)}\n</script>'
 
 
+SECTION_LABELS = {"services": "Services", "areas": "Areas", "blog": "Insights", "insights": "Insights"}
+SECTION_HREFS = {"services": "/services/", "areas": "/areas/", "blog": "/insights/", "insights": "/insights/"}
+
+def breadcrumb_ui(canonical: str, title: str) -> str:
+    """Visible breadcrumb for nested pages (e.g. /services/<slug>). Returns ''
+    for top-level pages. Mirrors the auto BreadcrumbList JSON-LD."""
+    parts = [p for p in canonical.strip("/").split("/") if p]
+    if len(parts) < 2:
+        return ""
+    name = title.split(" — ")[0].split(" · ")[0].split(":")[0].strip()
+    items = ['<li><a href="/">Home</a></li>']
+    sec = parts[0]
+    items.append(f'<li><a href="{SECTION_HREFS.get(sec, "/" + sec + "/")}">{SECTION_LABELS.get(sec, sec.title())}</a></li>')
+    items.append(f'<li><span aria-current="page">{name}</span></li>')
+    return ('<nav class="breadcrumb" aria-label="Breadcrumb"><ol>'
+            + "".join(items) + '</ol></nav>')
+
+
 def mark_active_nav(header_html: str, canonical: str) -> str:
     """Add aria-current="page" to the nav link whose href matches this page.
     Matches the section root so e.g. /blog/... highlights Insights."""
@@ -298,7 +316,9 @@ def build_page(page):
     # Mark the current page in the nav for a11y + UX (aria-current + active style).
     header = mark_active_nav(HEADER, page["canonical"])
 
-    html = "\n".join([head, header, '<main id="main">', body, '</main>', FOOTER, CHAT,
+    crumb_ui = breadcrumb_ui(page["canonical"], page["title"])
+
+    html = "\n".join([head, header, crumb_ui, '<main id="main">', body, '</main>', FOOTER, CHAT,
                       "</body>\n</html>\n"])
 
     # Substitute global business tokens ({{EMAIL}}, {{WA_LINK}}, …) site-wide.
@@ -330,6 +350,30 @@ PAGES = [
     {"slug": "services.html", "content": "services", "canonical": "/services",
      "title": "Services & Investor Tools — Damini Estate Dubai",
      "description": "Dubai residential sales, off-plan, commercial, investment advisory, property management and Golden Visa relocation — plus free mortgage, yield and ROI calculators."},
+
+    {"slug": "services/residential-sales.html", "content": "services/residential-sales", "canonical": "/services/residential-sales",
+     "title": "Residential Sales in Dubai — Damini Estate",
+     "description": "Buy or sell a home in Dubai with Damini Estate — apartments, townhouses and villas across every major community, with honest advice and hard negotiation."},
+
+    {"slug": "services/off-plan-investments.html", "content": "services/off-plan-investments", "canonical": "/services/off-plan-investments",
+     "title": "Off-Plan Investments in Dubai — Damini Estate",
+     "description": "Priority access to off-plan launches from Dubai's leading developers, with flexible payment plans, honest risk assessment and a clear exit strategy."},
+
+    {"slug": "services/commercial-real-estate.html", "content": "services/commercial-real-estate", "canonical": "/services/commercial-real-estate",
+     "title": "Commercial Real Estate in Dubai — Damini Estate",
+     "description": "Offices, retail and commercial assets in Dubai for owner-occupiers and investors — leasing, acquisition, and yield-led location analysis."},
+
+    {"slug": "services/investment-advisory.html", "content": "services/investment-advisory", "canonical": "/services/investment-advisory",
+     "title": "Property Investment Advisory in Dubai — Damini Estate",
+     "description": "Honest, data-led Dubai property investment advice: yield and ROI modelling, total cost of ownership, area comparison and exit strategy."},
+
+    {"slug": "services/property-management.html", "content": "services/property-management", "canonical": "/services/property-management",
+     "title": "Property Management in Dubai — Damini Estate",
+     "description": "Hands-off Dubai property management for landlords and overseas investors: tenant sourcing, Ejari, rent collection, maintenance and clear reporting."},
+
+    {"slug": "services/golden-visa-relocation.html", "content": "services/golden-visa-relocation", "canonical": "/services/golden-visa-relocation",
+     "title": "Golden Visa & Relocation in Dubai — Damini Estate",
+     "description": "Qualify for the UAE Golden Visa through property and relocate with ease — eligibility checks, qualifying property selection and full application support."},
 
     {"slug": "properties.html", "content": "properties", "canonical": "/properties",
      "title": "Featured Dubai Properties — Damini Estate",
