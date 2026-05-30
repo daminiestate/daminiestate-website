@@ -151,6 +151,10 @@ def build_page(page):
     if faq:
         head_extra += "\n" + faq
 
+    # Per-page resource preload (e.g. the LCP hero image) for faster first paint.
+    for pl in page.get("preload", []):
+        head_extra += f'\n<link rel="preload" as="image" href="{pl}" fetchpriority="high">'
+
     head = (HEAD
             .replace("{{TITLE}}", page["title"])
             .replace("{{DESCRIPTION}}", page["description"])
@@ -176,7 +180,8 @@ PAGES = [
     {"slug": "index.html", "content": "home", "canonical": "/",
      "title": "Damini Estate — Dubai Real Estate, Done Right",
      "description": "Damini Estate is a full-service real estate firm in Dubai. Buy, sell, rent, or invest in Dubai property with honest advice, deep market expertise, and results you can trust.",
-     "og_image": "/assets/img/og-home.jpg"},
+     "og_image": "/assets/img/og-home.jpg",
+     "preload": ["/assets/img/hero-dubai.jpg"]},
 
     {"slug": "about.html", "content": "about", "canonical": "/about",
      "title": "About Damini Estate — Your Partner in Dubai Property",
