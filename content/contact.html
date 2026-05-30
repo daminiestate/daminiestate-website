@@ -10,11 +10,11 @@
       <div class="contact-info reveal">
         <div class="contact-block">
           <h3 data-en="WhatsApp" data-ru="WhatsApp">WhatsApp</h3>
-          <a href="https://wa.me/971585720882?text=Hello%2C%20I%20am%20interested%20in%20a%20property%20at%20Damini%20Estate." rel="external noopener" target="_blank">+971 58 572 0882</a>
+          <a href="{{WA_LINK}}" rel="external noopener" target="_blank">{{PHONE_DISPLAY}}</a>
         </div>
         <div class="contact-block">
           <h3 data-en="Email" data-ru="Эл. почта">Email</h3>
-          <a href="mailto:info@daminiestate.ae">info@daminiestate.ae</a>
+          <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
         </div>
         <div class="contact-block">
           <h3 data-en="Office" data-ru="Офис">Office</h3>
@@ -22,7 +22,7 @@
         </div>
         <div class="contact-block">
           <h3 data-en="Listings" data-ru="Объекты">Listings</h3>
-          <a href="https://www.bayut.com/companies/damini-real-estate-108837/" rel="external noopener" target="_blank" data-en="View our verified Bayut profile" data-ru="Наш профиль на Bayut">View our verified Bayut profile</a>
+          <a href="{{BAYUT_URL}}" rel="external noopener" target="_blank" data-en="View our verified Bayut profile" data-ru="Наш профиль на Bayut">View our verified Bayut profile</a>
         </div>
         <div class="contact-block">
           <h3 data-en="Hours" data-ru="Часы работы">Hours</h3>
@@ -32,7 +32,7 @@
 
       <!-- Contact form -->
       <div class="reveal">
-        <form action="/contact" method="POST" data-ajax data-ok="Thank you. Our team will be in touch very shortly." data-err="Something went wrong. Please try again, email info@daminiestate.ae, or WhatsApp us.">
+        <form action="/contact" method="POST" data-ajax data-ok="Thank you. Our team will be in touch very shortly." data-err="Something went wrong. Please try again, email {{EMAIL}}, or WhatsApp us.">
           <div class="form-row">
             <div class="form-field">
               <label for="c-name" data-en="Full Name" data-ru="Имя">Full Name</label>
