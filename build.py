@@ -37,8 +37,10 @@ BIZ = {
     "rera": "57358",
     "bayut": "https://www.bayut.com/companies/damini-real-estate-108837/",
     "instagram": "https://www.instagram.com/daminiestate",
+    "address": "Crystal Tower, Office 1102, Business Bay, Dubai, UAE",
 }
 BIZ["wa_link"] = f"https://wa.me/{BIZ['wa_number']}?text={BIZ['wa_text']}"
+BIZ["wa_bare"] = f"https://wa.me/{BIZ['wa_number']}"
 BIZ["tel_link"] = f"tel:{BIZ['phone_e164']}"
 
 TOKENS = {
@@ -49,10 +51,12 @@ TOKENS = {
     "{{TEL_LINK}}": BIZ["tel_link"],
     "{{WA_NUMBER}}": BIZ["wa_number"],
     "{{WA_LINK}}": BIZ["wa_link"],
+    "{{WA_BARE}}": BIZ["wa_bare"],
     "{{EMAIL}}": BIZ["email"],
     "{{RERA}}": BIZ["rera"],
     "{{BAYUT_URL}}": BIZ["bayut"],
     "{{INSTAGRAM_URL}}": BIZ["instagram"],
+    "{{ADDRESS_FULL}}": BIZ["address"],
 }
 
 def apply_tokens(html: str) -> str:
