@@ -456,3 +456,16 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .article-eyebrow { margin-bottom: 16px; }
 .article-eyebrow a { color: var(--tan2); }
 .article-h1 { font-family: var(--serif); font-weight: 300; font-size: clamp(2rem, 4vw, 3rem); color: var(--cr); line-height: 1.15; margin-bottom: 24px; }
+
+/* ── Utility classes (replace inline styles → lets CSP drop 'unsafe-inline') ─ */
+.u-tan { color: var(--tan2); }
+.u-sand { color: var(--sand); }
+.u-mt-s { margin-top: 12px; }
+.u-mt-m { margin-top: 24px; }
+.u-mt-l { margin-top: 40px; }
+.u-mt-xl { margin-top: 48px; }
+.u-mb-l { margin-bottom: 40px; }
+.u-full { width: 100%; }
+.u-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 32px; }
+.u-badges { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+.u-404 { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; }
