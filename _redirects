@@ -1,0 +1,14 @@
+# Cloudflare Pages redirects for daminiestate.ae
+
+# Old single-page anchors → new clean URLs
+/index.html        /                301
+
+# Map the former on-page sections to their new pages
+/home              /                301
+/listings          /properties/     301
+/listing           /properties/     301
+
+# Browsers probe /favicon.ico by default → point them at our SVG favicon
+/favicon.ico       /favicon.svg     301
+
+# Trailing-slash convention is canonical (Cloudflare Pages serves /about/ from /about/index.html)
