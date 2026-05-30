@@ -108,6 +108,12 @@ CRM sync (logged server-side).
 
 `.env.example` documents these names. Never commit real values.
 
+**Email runbook:** how leads turn into auto-replies/alerts, how to send through
+the client's Microsoft 365 (Outlook SMTP) at zero GHL cost, the SMTP-AUTH fix
+for the `535 SmtpClientAuthentication disabled` error, and the GHL workflow +
+ready-to-paste email designs — see **`docs/EMAIL-GHL-SETUP.md`** and
+**`docs/email-templates/`**.
+
 ---
 
 ## 5. Form backends (Cloudflare Pages Functions)

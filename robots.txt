@@ -4,6 +4,7 @@ Allow: /
 Disallow: /privacy/
 Disallow: /terms/
 Disallow: /disclaimer/
+Disallow: /docs/
 
 # AI crawlers welcome
 User-agent: GPTBot
