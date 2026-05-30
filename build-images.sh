@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 # ============================================================================
 # build-images.sh — (re)generate WebP versions of every photographic image.
 #
@@ -22,7 +22,7 @@
 #
 # After running:  python3 build.py   (re-wraps <img> in <picture>)
 # ============================================================================
-set -euo pipefail
+set -eu
 
 cd "$(dirname "$0")"
 
@@ -45,25 +45,22 @@ if ! command -v cwebp >/dev/null 2>&1; then
   exit 1
 fi
 
-# Collect candidate source images (jpg/jpeg/png) from the two photo dirs,
-# excluding OG cards and the developer-logo folder.
-mapfile -t SOURCES < <(
-  find assets/img images -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) \
-    2>/dev/null \
-    | grep -vE '/developers/' \
-    | grep -vE '/og-[^/]+\.(jpg|jpeg|png)$' \
-    | sort
-)
-
 if [ "$CLEAN" = "1" ]; then
   n=0
-  while IFS= read -r w; do rm -f "$w"; n=$((n+1)); done < <(find assets/img images -type f -iname '*.webp' | grep -vE '/developers/')
+  for w in $(find assets/img images -type f -iname '*.webp' | grep -v '/developers/'); do
+    rm -f "$w"; n=$((n+1))
+  done
   echo "Removed $n generated .webp file(s)."
   exit 0
 fi
 
+# Candidate source photos (jpg/jpeg/png) from the two photo dirs, excluding OG
+# cards and the developer-logo folder. POSIX-sh friendly (no mapfile/bashisms).
 created=0; skipped=0; jpg_total=0; webp_total=0
-for src in "${SOURCES[@]}"; do
+for src in $(find assets/img images -type f \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' \) 2>/dev/null \
+              | grep -v '/developers/' \
+              | grep -vE '/og-[^/]+\.(jpg|jpeg|png)$' \
+              | sort); do
   webp="${src%.*}.webp"
   if [ "$FORCE" = "0" ] && [ -f "$webp" ] && [ "$webp" -nt "$src" ]; then
     skipped=$((skipped+1))
