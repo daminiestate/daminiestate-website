@@ -202,6 +202,24 @@ def mark_active_nav(header_html: str, canonical: str) -> str:
                   lambda m: m.group(0) + ' aria-current="page"', header_html)
 
 
+_IMG_TAG_RE = re.compile(r'<img\b[^>]*\bsrc="(/[^"]+\.(?:jpg|jpeg|png))"[^>]*>', re.IGNORECASE)
+
+def upgrade_images_to_webp(html: str) -> str:
+    """Wrap each <img src=".jpg|.png"> in a <picture> with a WebP <source> when a
+    sibling .webp exists on disk. Modern browsers fetch the smaller WebP; older
+    ones fall back to the original <img>, which keeps all its attributes (alt,
+    width/height, loading, fetchpriority) so layout + LCP behaviour is unchanged.
+    Skips imgs already inside a <picture>."""
+    def repl(m):
+        tag = m.group(0)
+        src = m.group(1)
+        webp = re.sub(r'\.(jpg|jpeg|png)$', '.webp', src, flags=re.IGNORECASE)
+        if not (ROOT / webp.lstrip('/')).exists():
+            return tag
+        return f'<picture><source srcset="{webp}" type="image/webp">{tag}</picture>'
+    return _IMG_TAG_RE.sub(repl, html)
+
+
 def build_page(page):
     head_extra = page.get("head_extra", "") or JSONLD_ORG
     robots = ("noindex, nofollow" if page.get("noindex")
@@ -218,8 +236,15 @@ def build_page(page):
         head_extra += "\n" + page_schema
 
     # Per-page resource preload (e.g. the LCP hero image) for faster first paint.
+    # Prefer the WebP variant when it exists so the preload matches what the
+    # <picture> actually loads in modern browsers.
     for pl in page.get("preload", []):
-        head_extra += f'\n<link rel="preload" as="image" href="{pl}" fetchpriority="high">'
+        webp = re.sub(r'\.(jpg|jpeg|png)$', '.webp', pl)
+        if webp != pl and (ROOT / webp.lstrip('/')).exists():
+            head_extra += (f'\n<link rel="preload" as="image" type="image/webp" '
+                           f'href="{webp}" fetchpriority="high">')
+        else:
+            head_extra += f'\n<link rel="preload" as="image" href="{pl}" fetchpriority="high">'
 
     head = (HEAD
             .replace("{{TITLE}}", page["title"])
