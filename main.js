@@ -5,39 +5,8 @@
 (function () {
   'use strict';
 
-  /* ── Intro loader: fade out when the page is actually ready ────────────── */
-  /* The loader is only in the DOM + visible on first arrival (loader-gate.js
-     adds html.loaded to skip it otherwise). We wait for the real readiness
-     signal — window load (hero image, fonts, CSS all fetched) — then fade,
-     with a safety cap so a slow asset never traps the visitor. */
-  (function loaderInit() {
-    var html = document.documentElement;
-    var loader = document.getElementById('loader');
-    if (!loader || html.classList.contains('loaded')) {
-      try { sessionStorage.setItem('dmn_loaded', '1'); } catch (e) {}
-      return;
-    }
-    var done = false;
-    function reveal() {
-      if (done) return;
-      done = true;
-      try { sessionStorage.setItem('dmn_loaded', '1'); } catch (e) {}
-      // brief minimum so the intro doesn't flash on a fast connection
-      loader.classList.add('loader-hide');
-      setTimeout(function () { if (loader && loader.parentNode) loader.parentNode.removeChild(loader); }, 750);
-    }
-    var MIN = 600;   // let the wordmark register
-    var CAP = 4000;  // hard safety cap — never trap the visitor
-    var start = Date.now();
-    function ready() {
-      var waited = Date.now() - start;
-      if (waited >= MIN) reveal();
-      else setTimeout(reveal, MIN - waited);
-    }
-    if (document.readyState === 'complete') ready();
-    else window.addEventListener('load', ready, { once: true });
-    setTimeout(reveal, CAP);
-  })();
+  /* Intro loader is handled entirely by /loader-gate.js (gate + removal) and
+     the inline <head> styles, so it never depends on this cached file. */
 
   /* ── Nav: solid on scroll ─────────────────────────────────────────────── */
   var nav = document.getElementById('siteNav');
