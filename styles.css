@@ -271,9 +271,12 @@ a { color: inherit; text-decoration: none; }
 .dev-strip-section::before, .dev-strip-section::after { content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
 .dev-strip-section::before { left: 0; background: linear-gradient(to right, var(--br2), transparent); }
 .dev-strip-section::after { right: 0; background: linear-gradient(to left, var(--br2), transparent); }
-.dev-strip-track { display: flex; gap: 80px; animation: devscroll 30s linear infinite; width: max-content; align-items: center; }
-.dev-logo { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: rgba(245,240,232,0.4); white-space: nowrap; letter-spacing: 0.05em; }
-.dev-logo span { font-size: 0.5rem; display: block; letter-spacing: 0.2em; margin-top: -2px; }
+.dev-strip-track { display: flex; gap: 72px; animation: devscroll 36s linear infinite; width: max-content; align-items: center; }
+.dev-strip-track:hover { animation-play-state: paused; }
+.dev-logo { display: flex; align-items: center; flex-shrink: 0; }
+.dev-logo img { height: 38px; width: auto; opacity: 0.45; transition: opacity 0.35s ease, transform 0.35s ease; }
+.dev-logo:hover img, .dev-logo:focus-visible img { opacity: 1; transform: scale(1.04); }
+@media (prefers-reduced-motion: reduce) { .dev-strip-track { animation: none; flex-wrap: wrap; justify-content: center; } }
 @keyframes devscroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ── Services ───────────────────────────────────────────────────────────── */

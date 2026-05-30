@@ -24,6 +24,8 @@
   Cache-Control: public, max-age=31536000, immutable
 /assets/img/*
   Cache-Control: public, max-age=31536000, immutable
+/assets/img/developers/*
+  Cache-Control: public, max-age=31536000, immutable
 /images/*
   Cache-Control: public, max-age=31536000, immutable
 /*.woff2
