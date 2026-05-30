@@ -455,6 +455,27 @@ ARTICLES = [
      "title": "The Dubai Golden Visa Through Property: A Practical Guide",
      "description": "How to qualify for the UAE Golden Visa through real estate investment — thresholds, eligible property, the process, and common mistakes to avoid.",
      "article": {"date": "2026-05-26", "section": "Guides"}},
+
+    {"slug": "blog/buying-property-in-dubai-foreigners.html", "content": "blog/buying-property-in-dubai-foreigners",
+     "canonical": "/blog/buying-property-in-dubai-foreigners",
+     "og_image": "/assets/img/insight-buying-process.jpg",
+     "title": "Buying Property in Dubai as a Foreigner: Step-by-Step",
+     "description": "The full step-by-step process for foreigners buying property in Dubai — freehold areas, budget and fees, financing, MOU, NOC, and the DLD transfer.",
+     "article": {"date": "2026-05-28", "section": "Guides"}},
+
+    {"slug": "blog/cost-of-buying-property-in-dubai.html", "content": "blog/cost-of-buying-property-in-dubai",
+     "canonical": "/blog/cost-of-buying-property-in-dubai",
+     "og_image": "/assets/img/insight-costs.jpg",
+     "title": "The Real Cost of Buying Property in Dubai",
+     "description": "A full breakdown of the cost of buying property in Dubai — the 4% DLD fee, agency and trustee fees, mortgage costs, NOC, and ongoing service charges.",
+     "article": {"date": "2026-05-29", "section": "Guides"}},
+
+    {"slug": "blog/best-areas-rental-yield-dubai.html", "content": "blog/best-areas-rental-yield-dubai",
+     "canonical": "/blog/best-areas-rental-yield-dubai",
+     "og_image": "/assets/img/insight-best-areas.jpg",
+     "title": "Best Areas for Rental Yield in Dubai (2026)",
+     "description": "Where to find the strongest rental yields in Dubai in 2026 — how gross vs net yield works, and the communities that tend to deliver the best returns.",
+     "article": {"date": "2026-05-30", "section": "Investing"}},
 ]
 
 
