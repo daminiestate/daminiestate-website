@@ -365,18 +365,21 @@ PAGES = [
 ARTICLES = [
     {"slug": "blog/off-plan-vs-ready-property-dubai.html", "content": "blog/off-plan-vs-ready-property-dubai",
      "canonical": "/blog/off-plan-vs-ready-property-dubai",
+     "og_image": "/assets/img/insight-offplan.jpg",
      "title": "Off-Plan vs Ready Property in Dubai: Which Is Right for You?",
      "description": "A clear, honest comparison of buying off-plan versus ready property in Dubai — payment plans, risk, yields, handover, and how to choose based on your goals.",
      "article": {"date": "2026-05-12", "section": "Investing"}},
 
     {"slug": "blog/dubai-rental-yields-explained.html", "content": "blog/dubai-rental-yields-explained",
      "canonical": "/blog/dubai-rental-yields-explained",
+     "og_image": "/assets/img/insight-yields.jpg",
      "title": "Dubai Rental Yields Explained: Gross, Net, and What to Expect",
      "description": "How rental yields work in Dubai, the difference between gross and net yield, typical figures by area, and the costs that quietly eat into your returns.",
      "article": {"date": "2026-05-20", "section": "Investing"}},
 
     {"slug": "blog/dubai-golden-visa-property.html", "content": "blog/dubai-golden-visa-property",
      "canonical": "/blog/dubai-golden-visa-property",
+     "og_image": "/assets/img/insight-goldenvisa.jpg",
      "title": "The Dubai Golden Visa Through Property: A Practical Guide",
      "description": "How to qualify for the UAE Golden Visa through real estate investment — thresholds, eligible property, the process, and common mistakes to avoid.",
      "article": {"date": "2026-05-26", "section": "Guides"}},
