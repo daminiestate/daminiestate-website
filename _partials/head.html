@@ -43,8 +43,26 @@
     /* critical: paint base before styles.css lands, prevent FOUC */
     html{background:#0E0C0A}
     body{margin:0;background:#0E0C0A;color:#F5F0E8;font-family:'Tenor Sans',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
+    /* critical loader styles (so the intro paints correctly before styles.css) */
+    #loader{position:fixed;inset:0;z-index:99999;background:#0E0C0A;display:flex;align-items:center;justify-content:center}
+    html.loaded #loader{display:none}
   </style>
+  <!-- JS disabled → never trap the visitor behind the loader -->
+  <noscript><style>#loader{display:none!important}</style></noscript>
+
+  <!-- Loader gate (first-party, CSP-safe, synchronous): adds html.loaded to
+       skip the intro instantly on repeat pages in the same visit and when the
+       visitor prefers reduced motion — so it only shows on the first arrival. -->
+  <script src="/loader-gate.js"></script>
 
   <script src="/main.js" defer></script>
 </head>
 <body>
+
+<div id="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <span class="loader-d">Damini</span>
+    <span class="loader-e">Dubai &middot; Luxury Real Estate</span>
+    <span class="loader-line"></span>
+  </div>
+</div>

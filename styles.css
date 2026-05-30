@@ -18,6 +18,40 @@
 @font-face{font-family:'Tenor Sans';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/tenor-sans-normal-400-latin.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 @font-face{font-family:'Tenor Sans';font-style:normal;font-weight:400;font-display:swap;src:url('/assets/fonts/tenor-sans-normal-400-cyrillic.woff2') format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
 
+/* ── Intro loader ───────────────────────────────────────────────────────── */
+/* Shown only on first arrival in a visit (gated by loader-gate.js). It covers
+   the screen while the hero image, fonts and CSS load in the background, then
+   fades out the moment the page is actually ready — no fixed timer. */
+#loader {
+  position: fixed; inset: 0; z-index: 99999;
+  background: #0E0C0A;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 1; transition: opacity 0.7s ease;
+}
+html.loaded #loader { display: none; }
+#loader.loader-hide { opacity: 0; pointer-events: none; }
+.loader-inner { text-align: center; opacity: 0; animation: loaderIn 1s ease 0.1s forwards; }
+.loader-d {
+  display: block; font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 7vw, 4.5rem); font-weight: 300;
+  letter-spacing: 0.5em; text-indent: 0.5em; color: #C9B99A; text-transform: uppercase; line-height: 1;
+}
+.loader-e {
+  display: block; margin-top: 14px;
+  font-family: 'Tenor Sans', sans-serif; font-size: clamp(0.5rem, 1.5vw, 0.72rem);
+  letter-spacing: 0.45em; text-indent: 0.45em; color: rgba(201,185,154,0.6); text-transform: uppercase;
+}
+.loader-line {
+  display: block; height: 1px; width: 0; margin: 26px auto 0;
+  background: linear-gradient(to right, transparent, #A8895A, transparent);
+  animation: loaderLine 1.4s ease 0.5s forwards;
+}
+@keyframes loaderIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes loaderLine { from { width: 0; } to { width: 200px; } }
+@media (prefers-reduced-motion: reduce) {
+  .loader-inner, .loader-line { animation: none; opacity: 1; }
+}
+
 /* ── Reset ──────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
