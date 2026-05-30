@@ -30,7 +30,7 @@
     setTimeout(function () { if (l && l.parentNode) l.parentNode.removeChild(l); }, 700);
   }
 
-  var MIN = 500;            // let the wordmark register briefly
+  var MIN = 1600;           // let the intro animation (bg fade + wordmark) play
   var start = Date.now();
   function ready() {
     var waited = Date.now() - start;
@@ -41,5 +41,5 @@
   if (document.readyState === 'complete') ready();
   else window.addEventListener('load', ready, { once: true });
 
-  setTimeout(reveal, 3500); // JS safety cap (CSS also auto-hides at 4s)
+  setTimeout(reveal, 4500); // JS safety cap (CSS also auto-hides at 5s)
 })();
