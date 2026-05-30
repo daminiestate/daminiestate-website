@@ -11,7 +11,4 @@
 # Browsers probe /favicon.ico by default → point them at our SVG favicon
 /favicon.ico       /favicon.svg     301
 
-# Internal docs (CLAUDE.md / docs/) are reference-only — not public on the site
-/docs/*            /404.html        404
-
 # Trailing-slash convention is canonical (Cloudflare Pages serves /about/ from /about/index.html)
