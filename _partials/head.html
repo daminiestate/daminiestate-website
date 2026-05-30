@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{{TITLE}}</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="author" content="Damini Estate">
+  <meta name="theme-color" content="#0E0C0A">
+  <meta name="color-scheme" content="dark">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="apple-mobile-web-app-title" content="Damini Estate">
+  <link rel="canonical" href="https://daminiestate.ae{{CANONICAL}}">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{TITLE}}">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:site_name" content="Damini Estate">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ru_RU">
+  <meta property="og:url" content="https://daminiestate.ae{{CANONICAL}}">
+  <meta property="og:image" content="https://daminiestate.ae{{OG_IMAGE}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{TITLE}}">
+  <meta name="twitter:description" content="{{DESCRIPTION}}">
+  <meta name="twitter:image" content="https://daminiestate.ae{{OG_IMAGE}}">
+
+  {{HEAD_EXTRA}}
+
+  <!-- Self-hosted fonts: zero third-party requests, no render-blocking Google CSS. -->
+  <link rel="preload" href="/assets/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/tenor-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+  <link rel="stylesheet" href="/styles.css">
+
+  <style>
+    /* critical: paint base before styles.css lands, prevent FOUC */
+    html{background:#0E0C0A}
+    body{margin:0;background:#0E0C0A;color:#F5F0E8;font-family:'Tenor Sans',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
+  </style>
+
+  <script src="/main.js" defer></script>
+</head>
+<body>
