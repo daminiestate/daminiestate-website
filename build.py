@@ -23,6 +23,43 @@ CONTENT = ROOT / "content"
 SITE = "https://daminiestate.ae"
 DEFAULT_OG = "/assets/img/og-default.jpg"
 
+# ── Single source of truth for business / contact details ────────────────────
+# Changed in one place here, substituted into every page via {{TOKENS}} at build
+# time (see apply_tokens, called in build_page).
+BIZ = {
+    "name": "Damini Estate",
+    "legal": "Damini Real Estate L.L.C",
+    "phone_e164": "+971585720882",
+    "phone_display": "+971 58 572 0882",
+    "wa_number": "971585720882",
+    "wa_text": "Hello%2C%20I%20am%20interested%20in%20a%20property%20at%20Damini%20Estate.",
+    "email": "info@daminiestate.ae",
+    "rera": "57358",
+    "bayut": "https://www.bayut.com/companies/damini-real-estate-108837/",
+    "instagram": "https://www.instagram.com/daminiestate",
+}
+BIZ["wa_link"] = f"https://wa.me/{BIZ['wa_number']}?text={BIZ['wa_text']}"
+BIZ["tel_link"] = f"tel:{BIZ['phone_e164']}"
+
+TOKENS = {
+    "{{BIZ_NAME}}": BIZ["name"],
+    "{{BIZ_LEGAL}}": BIZ["legal"],
+    "{{PHONE}}": BIZ["phone_e164"],
+    "{{PHONE_DISPLAY}}": BIZ["phone_display"],
+    "{{TEL_LINK}}": BIZ["tel_link"],
+    "{{WA_NUMBER}}": BIZ["wa_number"],
+    "{{WA_LINK}}": BIZ["wa_link"],
+    "{{EMAIL}}": BIZ["email"],
+    "{{RERA}}": BIZ["rera"],
+    "{{BAYUT_URL}}": BIZ["bayut"],
+    "{{INSTAGRAM_URL}}": BIZ["instagram"],
+}
+
+def apply_tokens(html: str) -> str:
+    for k, v in TOKENS.items():
+        html = html.replace(k, v)
+    return html
+
 def read(p): return (PARTIALS / p).read_text(encoding="utf-8")
 def read_content(name): return (CONTENT / f"{name}.html").read_text(encoding="utf-8")
 
@@ -259,6 +296,9 @@ def build_page(page):
 
     html = "\n".join([head, header, '<main id="main">', body, '</main>', FOOTER, CHAT,
                       "</body>\n</html>\n"])
+
+    # Substitute global business tokens ({{EMAIL}}, {{WA_LINK}}, …) site-wide.
+    html = apply_tokens(html)
 
     # Performance: async-decode + lazy-load images (skip those marked data-eager)
     html = re.sub(r'(<img\b(?![^>]*\bdecoding=)[^>]*)>', r'\1 decoding="async">', html)
