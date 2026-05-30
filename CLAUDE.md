@@ -61,6 +61,21 @@ Clean URLs: `about.html` is emitted as `about/index.html`. `index.html` and
 `404.html` stay at the root. To add a page: add an entry to `PAGES` in
 `build.py`, create `content/<name>.html`, run the build.
 
+**Images / WebP:** photos are served as WebP via `<picture>` with a JPEG
+fallback. `build.py` only adds the WebP `<source>` when a sibling `.webp` exists
+on disk. So when you **add or replace a photo** (a `.jpg`/`.png` in `assets/img/`
+or `images/`), regenerate the WebP first, then build:
+
+```bash
+./build-images.sh           # (re)create .webp siblings (needs: brew install webp)
+python3 build.py            # wraps <img> in <picture>
+```
+
+`build-images.sh` skips `og-*.jpg` (social cards stay JPEG) and the developer
+logos. Use `--force` to rebuild all, `--clean` to remove generated WebP. Mark a
+hero/LCP image `data-eager fetchpriority="high"` and add its path to a page's
+`"preload": [...]` in `build.py`; everything else lazy-loads automatically.
+
 Requirements: Python 3 only. No node_modules, no framework, no bundler.
 
 ---
