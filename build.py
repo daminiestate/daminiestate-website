@@ -72,6 +72,13 @@ HEADER = read("header.html")
 FOOTER = read("footer.html")
 CHAT = read("chat-widget.html")
 
+# GoHighLevel external page-view / form tracking. Loads from link.msgsndr.com
+# (allowlisted in _headers script-src); beacons events to backend.leadconnectorhq.com
+# (already covered by the *.leadconnectorhq.com connect-src). Injected once, just
+# before </body>, on every page (see build_page join below).
+GHL_TRACKING = ('<script src="https://link.msgsndr.com/js/external-tracking.js" '
+                'data-tracking-id="tk_68deebfd17d04ed685918c04c98c3e17"></script>')
+
 # ── RealEstateAgent + WebSite JSON-LD (default for every page) ───────────────
 ORG_JSONLD = json.dumps({
     "@context": "https://schema.org",
@@ -319,7 +326,7 @@ def build_page(page):
     crumb_ui = breadcrumb_ui(page["canonical"], page["title"])
 
     html = "\n".join([head, header, crumb_ui, '<main id="main">', body, '</main>', FOOTER, CHAT,
-                      "</body>\n</html>\n"])
+                      GHL_TRACKING, "</body>\n</html>\n"])
 
     # Substitute global business tokens ({{EMAIL}}, {{WA_LINK}}, …) site-wide.
     html = apply_tokens(html)
