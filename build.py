@@ -79,13 +79,13 @@ CHAT = read("chat-widget.html")
 GHL_TRACKING = ('<script src="https://link.msgsndr.com/js/external-tracking.js" '
                 'data-tracking-id="tk_68deebfd17d04ed685918c04c98c3e17"></script>')
 
-# Orevida Network Pixel (brand "Damini Estate", api_key ORE-9F44XXTH7N4K in the
+# Orevida Network Pixel (brand "Damini Estate", api_key ORE-P4PQEYRF2T9D in the
 # ogla brands table). Served same-origin from /pixel.js (functions/pixel.js.js),
 # which prepends a shim that rewrites t.orevida.com -> same-origin /t/* (handled
 # by functions/t/[[path]].js). The ?b= key is read client-side by the canonical
 # pixel. All first-party, so the strict CSP needs no change. Injected once,
 # before </body>, on every page.
-ORV_PIXEL = '<script src="/pixel.js?b=ORE-9F44XXTH7N4K" async></script>'
+ORV_PIXEL = '<script src="/pixel.js?b=ORE-P4PQEYRF2T9D" async></script>'
 
 # ── RealEstateAgent + WebSite JSON-LD (default for every page) ───────────────
 ORG_JSONLD = json.dumps({

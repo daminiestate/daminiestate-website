@@ -28,7 +28,7 @@
  * the page tag, and the pixel self-gates on the orevida_consent cookie.
  */
 
-const BRAND_KEY = 'ORE-9F44XXTH7N4K'; // Damini Estate — brands.api_key (db: ogla)
+const BRAND_KEY = 'ORE-P4PQEYRF2T9D'; // Damini Estate — brands.api_key (db: ogla)
 const UPSTREAM = `https://orevida.com/pixel.js?b=${BRAND_KEY}`;
 
 // Rewrite shim — patches the three transports the pixel uses so every
