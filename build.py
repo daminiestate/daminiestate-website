@@ -72,12 +72,12 @@ HEADER = read("header.html")
 FOOTER = read("footer.html")
 CHAT = read("chat-widget.html")
 
-# GoHighLevel external page-view / form tracking. Loads from link.msgsndr.com
-# (allowlisted in _headers script-src); beacons events to backend.leadconnectorhq.com
-# (already covered by the *.leadconnectorhq.com connect-src). Injected once, just
-# before </body>, on every page (see build_page join below).
-GHL_TRACKING = ('<script src="https://link.msgsndr.com/js/external-tracking.js" '
-                'data-tracking-id="tk_68deebfd17d04ed685918c04c98c3e17"></script>')
+# GoHighLevel external page-view / form tracking. Loaded via a same-origin
+# loader (/ghl-tracking.js) that gates on DNT/GPC before injecting the vendor
+# script from link.msgsndr.com (allowlisted in _headers script-src); the tracker
+# then beacons to backend.leadconnectorhq.com (covered by *.leadconnectorhq.com
+# connect-src). Injected once, just before </body>, on every page.
+GHL_TRACKING = '<script src="/ghl-tracking.js" defer></script>'
 
 # Orevida Network Pixel (brand "Damini Estate", api_key ORE-P4PQEYRF2T9D in the
 # ogla brands table). Served same-origin from /pixel.js (functions/pixel.js.js),
@@ -99,7 +99,7 @@ ORG_JSONLD = json.dumps({
             "url": SITE,
             "image": f"{SITE}{DEFAULT_OG}",
             "logo": f"{SITE}/apple-touch-icon.png",
-            "description": "Damini Estate is a full-service real estate firm based in Dubai, UAE. We help clients buy, sell, rent, and manage residential, off-plan, and commercial property across Dubai.",
+            "description": "Damini Estate is a full-service real estate firm in Dubai, UAE, helping clients buy, sell, rent, and manage residential, off-plan, and commercial property.",
             "email": "info@daminiestate.ae",
             "telephone": "+971585720882",
             "founder": {"@type": "Person", "name": "Lola Damini"},
@@ -154,7 +154,7 @@ def breadcrumb_jsonld(canonical: str, title: str) -> str:
     path = ""
     for i, p in enumerate(parts):
         path += "/" + p
-        name = title.split(" · ")[0].split("—")[0].strip() if i == len(parts) - 1 else p.replace("-", " ").title()
+        name = title.split(" · ")[0].split(" | ")[0].strip() if i == len(parts) - 1 else p.replace("-", " ").title()
         items.append({"@type": "ListItem", "position": i + 2, "name": name, "item": f"{SITE}{path}/"})
     payload = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": items}
     return f'<script type="application/ld+json">\n{json.dumps(payload, indent=2)}\n</script>'
@@ -197,7 +197,7 @@ def minify_html(html: str) -> str:
 
 def page_type_jsonld(canonical: str, title: str, description: str) -> str:
     """Per-page schema.org type to enrich search results."""
-    name = title.split(" — ")[0].split(" · ")[0].strip()
+    name = title.split(" | ")[0].split(" · ")[0].strip()
     url = SITE + canonical
     payload = None
     if canonical == "/contact":
@@ -249,7 +249,7 @@ def breadcrumb_ui(canonical: str, title: str) -> str:
     parts = [p for p in canonical.strip("/").split("/") if p]
     if len(parts) < 2:
         return ""
-    name = title.split(" — ")[0].split(" · ")[0].split(":")[0].strip()
+    name = title.split(" | ")[0].split(" · ")[0].split(":")[0].strip()
     items = ['<li><a href="/">Home</a></li>']
     sec = parts[0]
     items.append(f'<li><a href="{SECTION_HREFS.get(sec, "/" + sec + "/")}">{SECTION_LABELS.get(sec, sec.title())}</a></li>')
@@ -353,98 +353,98 @@ def build_page(page):
 
 PAGES = [
     {"slug": "index.html", "content": "home", "canonical": "/",
-     "title": "Damini Estate — Dubai Real Estate, Done Right",
-     "description": "Damini Estate is a full-service real estate firm in Dubai. Buy, sell, rent, or invest in Dubai property with honest advice, deep market expertise, and results you can trust.",
+     "title": "Damini Estate | Dubai Real Estate, Done Right",
+     "description": "Damini Estate is a full-service real estate firm in Dubai. Buy, sell, rent, or invest with honest advice, deep market expertise, and results you can trust.",
      "og_image": "/assets/img/og-home.jpg",
      "preload": ["/assets/img/hero-dubai.jpg"]},
 
     {"slug": "about.html", "content": "about", "canonical": "/about",
-     "title": "About Damini Estate — Your Partner in Dubai Property",
-     "description": "Meet Damini Estate: a Dubai real estate firm built on integrity, expertise, and genuine care. Learn our story, our values, and why clients trust us with their property goals."},
+     "title": "About Damini Estate | Your Partner in Dubai Property",
+     "description": "Meet Damini Estate, a Dubai real estate firm built on integrity, expertise, and genuine care. Our story, our values, and why clients trust us."},
 
     {"slug": "services.html", "content": "services", "canonical": "/services",
-     "title": "Services & Investor Tools — Damini Estate Dubai",
-     "description": "Dubai residential sales, off-plan, commercial, investment advisory, property management and Golden Visa relocation — plus free mortgage, yield and ROI calculators."},
+     "title": "Services & Investor Tools | Damini Estate Dubai",
+     "description": "Dubai residential sales, off-plan, commercial, investment advisory, property management and Golden Visa relocation, plus free yield and ROI calculators."},
 
     {"slug": "services/residential-sales.html", "content": "services/residential-sales", "canonical": "/services/residential-sales",
-     "title": "Residential Sales in Dubai — Damini Estate",
-     "description": "Buy or sell a home in Dubai with Damini Estate — apartments, townhouses and villas across every major community, with honest advice and hard negotiation."},
+     "title": "Residential Sales in Dubai | Damini Estate",
+     "description": "Buy or sell a home in Dubai with Damini Estate: apartments, townhouses and villas across every major community, with honest advice and hard negotiation."},
 
     {"slug": "services/off-plan-investments.html", "content": "services/off-plan-investments", "canonical": "/services/off-plan-investments",
-     "title": "Off-Plan Investments in Dubai — Damini Estate",
+     "title": "Off-Plan Investments in Dubai | Damini Estate",
      "description": "Priority access to off-plan launches from Dubai's leading developers, with flexible payment plans, honest risk assessment and a clear exit strategy."},
 
     {"slug": "services/commercial-real-estate.html", "content": "services/commercial-real-estate", "canonical": "/services/commercial-real-estate",
-     "title": "Commercial Real Estate in Dubai — Damini Estate",
-     "description": "Offices, retail and commercial assets in Dubai for owner-occupiers and investors — leasing, acquisition, and yield-led location analysis."},
+     "title": "Commercial Real Estate in Dubai | Damini Estate",
+     "description": "Offices, retail and commercial assets in Dubai for owner-occupiers and investors: leasing, acquisition, and yield-led location analysis."},
 
     {"slug": "services/investment-advisory.html", "content": "services/investment-advisory", "canonical": "/services/investment-advisory",
-     "title": "Property Investment Advisory in Dubai — Damini Estate",
+     "title": "Property Investment Advisory in Dubai | Damini Estate",
      "description": "Honest, data-led Dubai property investment advice: yield and ROI modelling, total cost of ownership, area comparison and exit strategy."},
 
     {"slug": "services/property-management.html", "content": "services/property-management", "canonical": "/services/property-management",
-     "title": "Property Management in Dubai — Damini Estate",
+     "title": "Property Management in Dubai | Damini Estate",
      "description": "Hands-off Dubai property management for landlords and overseas investors: tenant sourcing, Ejari, rent collection, maintenance and clear reporting."},
 
     {"slug": "services/golden-visa-relocation.html", "content": "services/golden-visa-relocation", "canonical": "/services/golden-visa-relocation",
-     "title": "Golden Visa & Relocation in Dubai — Damini Estate",
-     "description": "Qualify for the UAE Golden Visa through property and relocate with ease — eligibility checks, qualifying property selection and full application support."},
+     "title": "Golden Visa & Relocation in Dubai | Damini Estate",
+     "description": "Qualify for the UAE Golden Visa through property and relocate with ease: eligibility checks, qualifying property selection and full application support."},
 
     {"slug": "properties.html", "content": "properties", "canonical": "/properties",
-     "title": "Featured Dubai Properties — Damini Estate",
-     "description": "A curated selection of Dubai property for sale and rent — Business Bay, Downtown, Dubai Hills, MBR City, Palm Jumeirah and more. View live listings on our verified Bayut profile.",
+     "title": "Featured Dubai Properties | Damini Estate",
+     "description": "A curated selection of Dubai property for sale and rent across Business Bay, Downtown, Dubai Hills, MBR City and Palm Jumeirah. View live listings on Bayut.",
      "og_image": "/assets/img/og-properties.jpg"},
 
     {"slug": "contact.html", "content": "contact", "canonical": "/contact",
-     "title": "Contact Damini Estate — Dubai Real Estate Enquiries",
-     "description": "Speak with Damini Estate about buying, selling, renting, or investing in Dubai property. Call, WhatsApp, email, or send an enquiry — our Business Bay team responds quickly."},
+     "title": "Contact Damini Estate | Dubai Real Estate Enquiries",
+     "description": "Speak with Damini Estate about buying, selling, renting, or investing in Dubai property. Call, WhatsApp, email, or send an enquiry for a quick reply."},
 
     {"slug": "insights.html", "content": "insights", "canonical": "/insights",
-     "title": "Dubai Property Insights — Damini Estate",
+     "title": "Dubai Property Insights | Damini Estate",
      "description": "Clear guides to buying and investing in Dubai real estate: off-plan strategy, rental yields, the Golden Visa, service charges, and how the market really works."},
 
     {"slug": "areas.html", "content": "areas", "canonical": "/areas",
-     "title": "Dubai Communities & Areas — Damini Estate",
-     "description": "Explore Dubai's best communities to buy and invest in — Business Bay, Downtown, Dubai Hills, Palm Jumeirah, MBR City and JVC — lifestyle, property types and yields."},
+     "title": "Dubai Communities & Areas | Damini Estate",
+     "description": "Explore Dubai's best communities to buy and invest in: Business Bay, Downtown, Dubai Hills, Palm Jumeirah, MBR City and JVC, with lifestyle and yields."},
 
     {"slug": "areas/business-bay.html", "content": "areas/business-bay", "canonical": "/areas/business-bay",
-     "title": "Business Bay Area Guide — Damini Estate",
-     "description": "Buy or invest in Business Bay, Dubai — central canal-side living with strong rental demand. Lifestyle, property types and investment angle from Damini Estate."},
+     "title": "Business Bay Area Guide | Damini Estate",
+     "description": "Buy or invest in Business Bay, Dubai: central canal-side living with strong rental demand. Lifestyle, property types and investment angle."},
 
     {"slug": "areas/downtown-dubai.html", "content": "areas/downtown-dubai", "canonical": "/areas/downtown-dubai",
-     "title": "Downtown Dubai Area Guide — Damini Estate",
-     "description": "Buy or invest in Downtown Dubai — Burj Khalifa, Dubai Mall and trophy addresses that hold value. Lifestyle, property types and investment outlook."},
+     "title": "Downtown Dubai Area Guide | Damini Estate",
+     "description": "Buy or invest in Downtown Dubai: Burj Khalifa, Dubai Mall and trophy addresses that hold value. Lifestyle, property types and investment outlook."},
 
     {"slug": "areas/dubai-hills-estate.html", "content": "areas/dubai-hills-estate", "canonical": "/areas/dubai-hills-estate",
-     "title": "Dubai Hills Estate Area Guide — Damini Estate",
-     "description": "Buy or invest in Dubai Hills Estate — green, family-first living around a championship golf course. Lifestyle, villas, apartments and growth outlook."},
+     "title": "Dubai Hills Estate Area Guide | Damini Estate",
+     "description": "Buy or invest in Dubai Hills Estate: green, family-first living around a championship golf course. Lifestyle, villas, apartments and growth outlook."},
 
     {"slug": "areas/palm-jumeirah.html", "content": "areas/palm-jumeirah", "canonical": "/areas/palm-jumeirah",
-     "title": "Palm Jumeirah Area Guide — Damini Estate",
-     "description": "Buy or invest on Palm Jumeirah — beachfront apartments and signature villas on Dubai's iconic island. Lifestyle, property types and investment angle."},
+     "title": "Palm Jumeirah Area Guide | Damini Estate",
+     "description": "Buy or invest on Palm Jumeirah: beachfront apartments and signature villas on Dubai's iconic island. Lifestyle, property types and investment angle."},
 
     {"slug": "areas/mbr-city.html", "content": "areas/mbr-city", "canonical": "/areas/mbr-city",
-     "title": "MBR City Area Guide — Damini Estate",
-     "description": "Buy or invest in MBR City (Mohammed Bin Rashid City) — lagoons, villas and new-build value minutes from Downtown Dubai. Lifestyle and investment outlook."},
+     "title": "MBR City Area Guide | Damini Estate",
+     "description": "Buy or invest in MBR City (Mohammed Bin Rashid City): lagoons, villas and new-build value minutes from Downtown Dubai. Lifestyle and investment outlook."},
 
     {"slug": "areas/jvc.html", "content": "areas/jvc", "canonical": "/areas/jvc",
-     "title": "JVC (Jumeirah Village Circle) Area Guide — Damini Estate",
-     "description": "Buy or invest in JVC, Dubai — affordable entry and some of the city's strongest rental yields. Lifestyle, property types and investment angle."},
+     "title": "JVC (Jumeirah Village Circle) Area Guide | Damini Estate",
+     "description": "Buy or invest in JVC, Dubai: affordable entry and some of the city's strongest rental yields. Lifestyle, property types and investment angle."},
 
     {"slug": "privacy.html", "content": "privacy", "canonical": "/privacy", "noindex": True,
-     "title": "Privacy Policy — Damini Estate",
+     "title": "Privacy Policy | Damini Estate",
      "description": "How Damini Estate collects, uses, and protects your personal data."},
 
     {"slug": "terms.html", "content": "terms", "canonical": "/terms", "noindex": True,
-     "title": "Terms of Use — Damini Estate",
+     "title": "Terms of Use | Damini Estate",
      "description": "The terms governing the use of the Damini Estate website."},
 
     {"slug": "disclaimer.html", "content": "disclaimer", "canonical": "/disclaimer", "noindex": True,
-     "title": "Disclaimer — Damini Estate",
+     "title": "Disclaimer | Damini Estate",
      "description": "Important disclaimers regarding property information, investment, and calculators on the Damini Estate website."},
 
     {"slug": "404.html", "content": "404", "canonical": "/404", "noindex": True,
-     "title": "Page Not Found — Damini Estate",
+     "title": "Page Not Found | Damini Estate",
      "description": "The page you are looking for could not be found."},
 ]
 
@@ -454,13 +454,13 @@ ARTICLES = [
      "canonical": "/blog/off-plan-vs-ready-property-dubai",
      "og_image": "/assets/img/insight-offplan.jpg",
      "title": "Off-Plan vs Ready Property in Dubai: Which Is Right for You?",
-     "description": "A clear, honest comparison of buying off-plan versus ready property in Dubai — payment plans, risk, yields, handover, and how to choose based on your goals.",
+     "description": "A clear, honest comparison of buying off-plan versus ready property in Dubai: payment plans, risk, yields, handover, and how to choose for your goals.",
      "article": {"date": "2026-05-12", "section": "Investing"}},
 
     {"slug": "blog/dubai-rental-yields-explained.html", "content": "blog/dubai-rental-yields-explained",
      "canonical": "/blog/dubai-rental-yields-explained",
      "og_image": "/assets/img/insight-yields.jpg",
-     "title": "Dubai Rental Yields Explained: Gross, Net, and What to Expect",
+     "title": "Dubai Rental Yields Explained: Gross vs Net Returns",
      "description": "How rental yields work in Dubai, the difference between gross and net yield, typical figures by area, and the costs that quietly eat into your returns.",
      "article": {"date": "2026-05-20", "section": "Investing"}},
 
@@ -468,28 +468,28 @@ ARTICLES = [
      "canonical": "/blog/dubai-golden-visa-property",
      "og_image": "/assets/img/insight-goldenvisa.jpg",
      "title": "The Dubai Golden Visa Through Property: A Practical Guide",
-     "description": "How to qualify for the UAE Golden Visa through real estate investment — thresholds, eligible property, the process, and common mistakes to avoid.",
+     "description": "How to qualify for the UAE Golden Visa through real estate investment: thresholds, eligible property, the process, and common mistakes to avoid.",
      "article": {"date": "2026-05-26", "section": "Guides"}},
 
     {"slug": "blog/buying-property-in-dubai-foreigners.html", "content": "blog/buying-property-in-dubai-foreigners",
      "canonical": "/blog/buying-property-in-dubai-foreigners",
      "og_image": "/assets/img/insight-buying-process.jpg",
      "title": "Buying Property in Dubai as a Foreigner: Step-by-Step",
-     "description": "The full step-by-step process for foreigners buying property in Dubai — freehold areas, budget and fees, financing, MOU, NOC, and the DLD transfer.",
+     "description": "The full step-by-step process for foreigners buying property in Dubai: freehold areas, budget and fees, financing, MOU, NOC, and the DLD transfer.",
      "article": {"date": "2026-05-28", "section": "Guides"}},
 
     {"slug": "blog/cost-of-buying-property-in-dubai.html", "content": "blog/cost-of-buying-property-in-dubai",
      "canonical": "/blog/cost-of-buying-property-in-dubai",
      "og_image": "/assets/img/insight-costs.jpg",
      "title": "The Real Cost of Buying Property in Dubai",
-     "description": "A full breakdown of the cost of buying property in Dubai — the 4% DLD fee, agency and trustee fees, mortgage costs, NOC, and ongoing service charges.",
+     "description": "A full breakdown of the cost of buying property in Dubai: the 4% DLD fee, agency and trustee fees, mortgage costs, NOC, and ongoing service charges.",
      "article": {"date": "2026-05-29", "section": "Guides"}},
 
     {"slug": "blog/best-areas-rental-yield-dubai.html", "content": "blog/best-areas-rental-yield-dubai",
      "canonical": "/blog/best-areas-rental-yield-dubai",
      "og_image": "/assets/img/insight-best-areas.jpg",
      "title": "Best Areas for Rental Yield in Dubai (2026)",
-     "description": "Where to find the strongest rental yields in Dubai in 2026 — how gross vs net yield works, and the communities that tend to deliver the best returns.",
+     "description": "Where to find the strongest rental yields in Dubai in 2026, how gross vs net yield works, and the communities that tend to deliver the best returns.",
      "article": {"date": "2026-05-30", "section": "Investing"}},
 ]
 

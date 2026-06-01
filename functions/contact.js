@@ -87,7 +87,12 @@ export async function onRequestPost({ request, env, ctx }) {
         `\nPage    : ${oneline(pageUrl)}`,
         visitorCity ? `Location: ${oneline(visitorCity)}${visitorCountry ? ', ' + visitorCountry : ''}` : (visitorCountry ? `Country : ${visitorCountry}` : null),
         attr.utm_source ? `UTM src : ${oneline(attr.utm_source)}` : null,
+        attr.utm_medium ? `UTM med : ${oneline(attr.utm_medium)}` : null,
         attr.utm_campaign ? `Campaign: ${oneline(attr.utm_campaign)}` : null,
+        attr.utm_content ? `Content : ${oneline(attr.utm_content)}` : null,
+        (attr.fbclid || attr.gclid || attr.ttclid || attr.msclkid || attr.li_fat_id)
+          ? `ClickIDs: ${['fbclid', 'gclid', 'ttclid', 'msclkid', 'li_fat_id'].map((k) => attr[k] ? k + '=' + oneline(attr[k]) : null).filter(Boolean).join(' ')}`
+          : null,
       ].filter((l) => l !== null).join('\n');
 
       const tags = ['website-enquiry'];
@@ -105,7 +110,7 @@ export async function onRequestPost({ request, env, ctx }) {
             pipelineStageId: env.GHL_STAGE_ID,
             locationId: ghlLocationId,
             contactId,
-            name: `${name} — ${interest || 'Enquiry'}`,
+            name: `${name}, ${interest || 'Enquiry'}`,
             status: 'open',
           }).catch((e) => { console.error('GHL opportunity error:', e); return null; })
         );
@@ -113,7 +118,7 @@ export async function onRequestPost({ request, env, ctx }) {
       await Promise.all(tasks);
     }
   } else {
-    console.warn('GHL env vars not set — skipping CRM sync for contact form');
+    console.warn('GHL env vars not set, skipping CRM sync for contact form');
   }
 
   // Internal fallback notification if CRM sync failed

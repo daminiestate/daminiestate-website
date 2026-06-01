@@ -6,11 +6,11 @@
  * and never sent to the browser.
  *
  * Env vars used by the form handlers:
- *   GHL_API_KEY      — GoHighLevel private integration key (pit-...)
- *   GHL_LOCATION_ID  — GHL sub-account location ID
- *   RESEND_API_KEY   — Resend API key (re_...) for confirmation emails (optional)
- *   RESEND_FROM      — verified sender, e.g. "Damini Estate <hello@send.daminiestate.ae>" (optional)
- *   NOTIFY_EMAIL     — internal inbox for fallback notifications (optional, defaults to info@daminiestate.ae)
+ *   GHL_API_KEY     , GoHighLevel private integration key (pit-...)
+ *   GHL_LOCATION_ID , GHL sub-account location ID
+ *   RESEND_API_KEY  , Resend API key (re_...) for confirmation emails (optional)
+ *   RESEND_FROM     , verified sender, e.g. "Damini Estate <hello@send.daminiestate.ae>" (optional)
+ *   NOTIFY_EMAIL    , internal inbox for fallback notifications (optional, defaults to info@daminiestate.ae)
  */
 
 export const ALLOWED_HOSTS = ['daminiestate.ae', 'www.daminiestate.ae'];
@@ -113,8 +113,12 @@ export function attribution(get) {
     utm_source: clip(get('h_utm_source')),
     utm_medium: clip(get('h_utm_medium')),
     utm_campaign: clip(get('h_utm_campaign')),
+    utm_content: clip(get('h_utm_content')),
+    utm_term: clip(get('h_utm_term')),
     fbclid: clip(get('h_fbclid')),
     gclid: clip(get('h_gclid')),
     ttclid: clip(get('h_ttclid')),
+    msclkid: clip(get('h_msclkid')),
+    li_fat_id: clip(get('h_li_fat_id')),
   };
 }

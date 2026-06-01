@@ -26,14 +26,14 @@
   <meta property="og:image" content="https://daminiestate.ae{{OG_IMAGE}}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Damini Estate — Dubai real estate">
+  <meta property="og:image:alt" content="Damini Estate, Dubai real estate">
   <meta property="og:image:type" content="image/jpeg">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{{TITLE}}">
   <meta name="twitter:description" content="{{DESCRIPTION}}">
   <meta name="twitter:image" content="https://daminiestate.ae{{OG_IMAGE}}">
-  <meta name="twitter:image:alt" content="Damini Estate — Dubai real estate">
+  <meta name="twitter:image:alt" content="Damini Estate, Dubai real estate">
 
   {{HEAD_EXTRA}}
 
@@ -47,7 +47,7 @@
     /* critical: paint base before styles.css lands, prevent FOUC */
     html{background:#0E0C0A}
     body{margin:0;background:#0E0C0A;color:#F5F0E8;font-family:'Tenor Sans',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif}
-    /* ── Intro loader — FULLY self-contained here so it never depends on a
+    /* ── Intro loader. FULLY self-contained here so it never depends on a
        cached styles.css/main.js. A pure-CSS animation auto-hides it after 5s
        even if JavaScript never runs, so the site can never be trapped. ── */
     #loader{position:fixed;inset:0;z-index:99999;background:#0E0C0A;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;animation:dmnLoaderSafety 0s linear 5s forwards}
@@ -81,7 +81,7 @@
 
   <!-- Loader gate (first-party, CSP-safe, synchronous): adds html.loaded to
        skip the intro instantly on repeat pages in the same visit and when the
-       visitor prefers reduced motion — so it only shows on the first arrival. -->
+       visitor prefers reduced motion, so it only shows on the first arrival. -->
   <script src="/loader-gate.js"></script>
 
   <script src="/main.js" defer></script>

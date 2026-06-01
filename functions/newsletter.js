@@ -75,7 +75,7 @@ export async function onRequestPost({ request, env }) {
       ]);
     }
   } else {
-    console.warn('GHL env vars not set — skipping CRM sync for newsletter');
+    console.warn('GHL env vars not set, skipping CRM sync for newsletter');
   }
 
   if (env.RESEND_API_KEY && env.RESEND_FROM) {
@@ -114,7 +114,7 @@ function welcomeHtml() {
     </td></tr>
     <tr><td style="padding:36px 40px;font-family:Arial,Helvetica,sans-serif;color:#DDD5C8">
       <p style="margin:0 0 16px;font-size:20px;color:#F5F0E8;font-family:Georgia,serif">Welcome to Damini Estate</p>
-      <p style="margin:0 0 16px;font-size:14px;line-height:1.8">Thank you for subscribing. You'll be among the first to hear about new launches, honest market insight, and curated Dubai listings — before they go public.</p>
+      <p style="margin:0 0 16px;font-size:14px;line-height:1.8">Thank you for subscribing. You'll be among the first to hear about new launches, honest market insight, and curated Dubai listings, before they go public.</p>
       <a href="https://daminiestate.ae/properties/" style="display:inline-block;background:#C9B99A;color:#0E0C0A;text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:14px 28px;margin-top:8px">Browse Properties</a>
     </td></tr>
     <tr><td style="padding:24px 40px;border-top:1px solid rgba(245,240,232,0.12);font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.7;color:#8a857b">

@@ -12,10 +12,10 @@
  *   https://t.orevida.com/net/batch → /t/net/batch
  * This catch-all handles every sub-path under /t/.
  *
- * Runs at the Cloudflare edge — negligible latency, always on.
+ * Runs at the Cloudflare edge, negligible latency, always on.
  */
 
-// Only forward the known Orevida pixel endpoints — reject arbitrary sub-paths.
+// Only forward the known Orevida pixel endpoints, reject arbitrary sub-paths.
 const ALLOWED_PATHS = new Set(['net', 'net/batch']);
 
 const CORS_ORIGIN = 'https://daminiestate.ae';
@@ -66,7 +66,7 @@ export async function onRequest(context) {
     return new Response(null, { status: 403 });
   }
 
-  // Allowlist: only proxy known Orevida endpoints. Use 200 (not 204) — RFC 7230
+  // Allowlist: only proxy known Orevida endpoints. Use 200 (not 204), RFC 7230
   // forbids a body on 204, and the pixel client may JSON.parse the body.
   if (!ALLOWED_PATHS.has(upstreamPath)) {
     return new Response('{}', {
@@ -83,6 +83,11 @@ export async function onRequest(context) {
   const upstreamUrl = `https://t.orevida.com/${upstreamPath}${qs}`;
 
   try {
+    // Reject oversized proxy bodies (tracking beacons are tiny; cap blocks relay abuse).
+    if (request.method !== 'GET' && request.method !== 'HEAD' &&
+        parseInt(request.headers.get('content-length') || '0', 10) > 32768) {
+      return new Response(null, { status: 413 });
+    }
     const body = (request.method !== 'GET' && request.method !== 'HEAD')
       ? await request.arrayBuffer()
       : undefined;
@@ -114,7 +119,7 @@ export async function onRequest(context) {
       },
     });
   } catch (_err) {
-    // Silent 200 — never block the page over a tracking failure.
+    // Silent 200, never block the page over a tracking failure.
     return new Response('{}', {
       status: 200,
       headers: {

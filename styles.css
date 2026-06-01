@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Damini Estate — Global Design System
+   Damini Estate Global Design System
    Dark luxury aesthetic: Cormorant Garamond (display) + Tenor Sans (body)
    Self-hosted fonts, first-party only. Mobile-first, WCAG 2.2 AA.
    ========================================================================== */
@@ -241,7 +241,7 @@ a { color: inherit; text-decoration: none; }
 .dev-strip-track:hover { animation-play-state: paused; }
 .dev-logo { display: flex; align-items: center; justify-content: center; flex-shrink: 0; height: 46px; }
 /* Normalize every brand logo (colour SVG, white SVG, or PNG with alpha) to a
-   uniform cream monochrome that reads on the dark strip — done purely in CSS so
+   uniform cream monochrome that reads on the dark strip, done purely in CSS so
    the original logo files stay untouched. brightness(0) collapses any colour to
    black; invert + sepia/hue lift it to the site's cream tone. */
 .dev-logo img {

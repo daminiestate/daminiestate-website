@@ -6,7 +6,7 @@
  * Why first-party: ad blockers (uBlock, Brave, Pi-hole) block third-party
  * requests to orevida.com / t.orevida.com. Serving the pixel from the site's
  * own domain (/pixel.js) and routing events through /t/* (same origin) bypasses
- * these blocks — the customer's own domain is never on a blocklist.
+ * these blocks, the customer's own domain is never on a blocklist.
  *
  * How it works:
  *   1. We fetch the canonical pixel from orevida.com/pixel.js (edge-cached 1h).
@@ -16,7 +16,7 @@
  *      "/t/net/batch". The /t/[[path]].js function then proxies them server-side
  *      to t.orevida.com (see that file).
  *   3. The brand key is supplied by the page's <script src="/pixel.js?b=ORE-...">
- *      tag — the canonical pixel reads it from its own currentScript.src.
+ *      tag, the canonical pixel reads it from its own currentScript.src.
  *
  * CSP: because the shim is delivered INSIDE this same-origin .js file (not an
  * inline <script>), the strict CSP (script-src 'self') needs no exception, and
@@ -28,10 +28,10 @@
  * the page tag, and the pixel self-gates on the orevida_consent cookie.
  */
 
-const BRAND_KEY = 'ORE-P4PQEYRF2T9D'; // Damini Estate — brands.api_key (db: ogla)
+const BRAND_KEY = 'ORE-P4PQEYRF2T9D'; // Damini Estate, brands.api_key (db: ogla)
 const UPSTREAM = `https://orevida.com/pixel.js?b=${BRAND_KEY}`;
 
-// Rewrite shim — patches the three transports the pixel uses so every
+// Rewrite shim, patches the three transports the pixel uses so every
 // t.orevida.com call becomes same-origin /t/*. Hostname-guarded to the live
 // domains so it never rewrites on *.pages.dev previews or localhost.
 const SHIM = `(function(){try{var H=location.hostname;if(H!=="daminiestate.ae"&&H!=="www.daminiestate.ae")return;function R(u){return typeof u==="string"&&u.indexOf("t.orevida.com")>-1?"/t"+(u.split("t.orevida.com")[1]||""):u;}var f=window.fetch;if(f)window.fetch=function(u,o){try{u=R(u);}catch(e){}return f.call(this,u,o);};var xo=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(m,u){try{arguments[1]=R(u);}catch(e){}return xo.apply(this,arguments);};if(navigator.sendBeacon){var sb=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u,d){try{u=R(u);}catch(e){}return sb(u,d);};}}catch(e){}})();\n`;
@@ -64,7 +64,7 @@ export async function onRequestGet() {
   }
 }
 
-/** Only handle GET — reject everything else. */
+/** Only handle GET, reject everything else. */
 export function onRequest({ request }) {
   if (request.method === 'GET') return onRequestGet();
   return new Response('Method Not Allowed', { status: 405 });

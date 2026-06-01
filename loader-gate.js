@@ -1,4 +1,4 @@
-/* Intro loader controller — first-party, CSP-safe, self-contained.
+/* Intro loader controller. First-party, CSP-safe, self-contained.
    Loaded synchronously in <head> so it can gate the loader before first paint.
    It is fully responsible for the loader (gate + removal) and does NOT depend on
    styles.css or main.js, so a stale cached copy of those can never trap the page.
