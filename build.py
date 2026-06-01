@@ -387,27 +387,33 @@ PAGES = [
 
     {"slug": "services/residential-sales.html", "content": "services/residential-sales", "canonical": "/services/residential-sales",
      "title": "Residential Sales in Dubai | Damini Estate",
-     "description": "Buy or sell a home in Dubai with Damini Estate: apartments, townhouses and villas across every major community, with honest advice and hard negotiation."},
+     "description": "Buy or sell a home in Dubai with Damini Estate: apartments, townhouses and villas across every major community, with honest advice and hard negotiation.",
+     "og_image": "/assets/img/svc-residential-sales.jpg", "preload": ["/assets/img/svc-residential-sales.jpg"]},
 
     {"slug": "services/off-plan-investments.html", "content": "services/off-plan-investments", "canonical": "/services/off-plan-investments",
      "title": "Off-Plan Investments in Dubai | Damini Estate",
-     "description": "Priority access to off-plan launches from Dubai's leading developers, with flexible payment plans, honest risk assessment and a clear exit strategy."},
+     "description": "Priority access to off-plan launches from Dubai's leading developers, with flexible payment plans, honest risk assessment and a clear exit strategy.",
+     "og_image": "/assets/img/svc-offplan.jpg", "preload": ["/assets/img/svc-offplan.jpg"]},
 
     {"slug": "services/commercial-real-estate.html", "content": "services/commercial-real-estate", "canonical": "/services/commercial-real-estate",
      "title": "Commercial Real Estate in Dubai | Damini Estate",
-     "description": "Offices, retail and commercial assets in Dubai for owner-occupiers and investors: leasing, acquisition, and yield-led location analysis."},
+     "description": "Offices, retail and commercial assets in Dubai for owner-occupiers and investors: leasing, acquisition, and yield-led location analysis.",
+     "og_image": "/assets/img/svc-commercial-real-estate.jpg", "preload": ["/assets/img/svc-commercial-real-estate.jpg"]},
 
     {"slug": "services/investment-advisory.html", "content": "services/investment-advisory", "canonical": "/services/investment-advisory",
      "title": "Property Investment Advisory in Dubai | Damini Estate",
-     "description": "Honest, data-led Dubai property investment advice: yield and ROI modelling, total cost of ownership, area comparison and exit strategy."},
+     "description": "Honest, data-led Dubai property investment advice: yield and ROI modelling, total cost of ownership, area comparison and exit strategy.",
+     "og_image": "/assets/img/svc-investment-advisory.jpg", "preload": ["/assets/img/svc-investment-advisory.jpg"]},
 
     {"slug": "services/property-management.html", "content": "services/property-management", "canonical": "/services/property-management",
      "title": "Property Management in Dubai | Damini Estate",
-     "description": "Hands-off Dubai property management for landlords and overseas investors: tenant sourcing, Ejari, rent collection, maintenance and clear reporting."},
+     "description": "Hands-off Dubai property management for landlords and overseas investors: tenant sourcing, Ejari, rent collection, maintenance and clear reporting.",
+     "og_image": "/assets/img/svc-property-management.jpg", "preload": ["/assets/img/svc-property-management.jpg"]},
 
     {"slug": "services/golden-visa-relocation.html", "content": "services/golden-visa-relocation", "canonical": "/services/golden-visa-relocation",
      "title": "Golden Visa & Relocation in Dubai | Damini Estate",
-     "description": "Qualify for the UAE Golden Visa through property and relocate with ease: eligibility checks, qualifying property selection and full application support."},
+     "description": "Qualify for the UAE Golden Visa through property and relocate with ease: eligibility checks, qualifying property selection and full application support.",
+     "og_image": "/assets/img/svc-golden-visa-relocation.jpg", "preload": ["/assets/img/svc-golden-visa-relocation.jpg"]},
 
     {"slug": "properties.html", "content": "properties", "canonical": "/properties",
      "title": "Featured Dubai Properties | Damini Estate",
