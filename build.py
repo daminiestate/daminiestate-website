@@ -179,8 +179,8 @@ def breadcrumb_jsonld(canonical: str, title: str) -> str:
     return f'<script type="application/ld+json">\n{json.dumps(payload, indent=2)}\n</script>'
 
 
-FAQ_Q_RE = re.compile(r'<button class="faq-q"[^>]*>(.*?)</button>', re.DOTALL)
-FAQ_A_RE = re.compile(r'<div class="faq-a-inner">(.*?)</div>', re.DOTALL)
+FAQ_Q_RE = re.compile(r'<button[^>]*\bclass="faq-q"[^>]*>(.*?)</button>', re.DOTALL)
+FAQ_A_RE = re.compile(r'<div[^>]*\bclass="faq-a-inner"[^>]*>(.*?)</div>', re.DOTALL)
 TAG_RE = re.compile(r'<[^>]+>')
 
 def faqpage_jsonld(body: str) -> str:

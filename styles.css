@@ -507,6 +507,13 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .area-card p { font-size: 0.7rem; line-height: 1.75; color: var(--cr-60); }
 .area-card .area-more { display: block; margin-top: 12px; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); }
 
+/* ── Cross-link cards (subpage "explore further") ───────────────────────── */
+.area-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.area-link-card { display: flex; align-items: center; padding: 22px 24px; border: 1px solid var(--hrlt); background: var(--br2); color: var(--cr); font-size: 0.82rem; line-height: 1.55; transition: border-color 0.3s, transform 0.3s; }
+.area-link-card:hover { border-color: var(--sand); transform: translateY(-3px); }
+.area-link-card::after { content: "\2192"; margin-left: auto; padding-left: 14px; color: var(--sand); }
+@media (max-width: 860px) { .area-links { grid-template-columns: 1fr; } }
+
 /* ── Testimonials ───────────────────────────────────────────────────────── */
 .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .quote { border: 1px solid var(--hrlt); padding: 32px 28px; background: var(--br); display: flex; flex-direction: column; gap: 16px; }
