@@ -57,12 +57,12 @@ You need: login access to the Cloudflare account that hosts **daminiestate.ae**
 (this is a Cloudflare **Pages** project). If you can see the site under
 Workers & Pages, you have the right account.
 
-### Step 1 — Open Cloudflare
+### Step 1: Open Cloudflare
 1. Go to https://dash.cloudflare.com and log in.
 2. If you manage more than one account, pick the account that owns
    daminiestate.ae (top-left account switcher).
 
-### Step 2 — Create the KV namespace
+### Step 2: Create the KV namespace
 1. In the left sidebar, click **Storage & Databases** -> **KV**.
    (On some accounts it is under **Workers & Pages** -> **KV**.)
 2. Click **Create a namespace** (or **Create namespace**).
@@ -73,7 +73,7 @@ Workers & Pages, you have the right account.
 4. Click **Add** / **Create**. You will now see it in the KV list. That is all
    for this step. (You do NOT need to add any keys; the code fills it.)
 
-### Step 3 — Bind the namespace to the website
+### Step 3: Bind the namespace to the website
 This is the part that actually connects KV to the site so the code can use it.
 1. Left sidebar -> **Workers & Pages**.
 2. Click the project for this site (it will be named something like
@@ -96,7 +96,7 @@ This is the part that actually connects KV to the site so the code can use it.
    (Production + Preview are listed separately). Same variable name `LEADS_KV`,
    same namespace.
 
-### Step 4 — Tell the developer / leave a note
+### Step 4: Tell the developer / leave a note
 That is everything on your side. The binding `LEADS_KV` now exists. The next
 person working in the code (a developer, or Claude auditing this repo) will
 detect it and wire up the persist-first + outbox + replay logic. Until they do,
