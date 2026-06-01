@@ -72,12 +72,31 @@ HEADER = read("header.html")
 FOOTER = read("footer.html")
 CHAT = read("chat-widget.html")
 
+# ── Cache-busting for non-hashed static assets ───────────────────────────────
+# styles.css / main.js / loader-gate.js / ghl-tracking.js are served with a
+# short max-age (see _headers); stamp each <link>/<script> ref with ?v=<mtime>
+# so a deploy is never hidden by a stale browser cache. Stamp = file mtime int.
+def _vstamp(name):
+    try:
+        return str(int((ROOT / name).stat().st_mtime))
+    except OSError:
+        return "0"
+
+def apply_asset_versions(html: str) -> str:
+    # Reference form in the partials is always a quoted root path, e.g. "/styles.css".
+    for asset in ("styles.css", "main.js", "loader-gate.js", "ghl-tracking.js"):
+        v = _vstamp(asset)
+        html = html.replace(f'"/{asset}"', f'"/{asset}?v={v}"')
+    return html
+
+HEAD = apply_asset_versions(HEAD)
+
 # GoHighLevel external page-view / form tracking. Loaded via a same-origin
 # loader (/ghl-tracking.js) that gates on DNT/GPC before injecting the vendor
 # script from link.msgsndr.com (allowlisted in _headers script-src); the tracker
 # then beacons to backend.leadconnectorhq.com (covered by *.leadconnectorhq.com
 # connect-src). Injected once, just before </body>, on every page.
-GHL_TRACKING = '<script src="/ghl-tracking.js" defer></script>'
+GHL_TRACKING = apply_asset_versions('<script src="/ghl-tracking.js" defer></script>')
 
 # Orevida Network Pixel (brand "Damini Estate", api_key ORE-P4PQEYRF2T9D in the
 # ogla brands table). Served same-origin from /pixel.js (functions/pixel.js.js),

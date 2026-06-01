@@ -398,6 +398,11 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 /* ── Reveal-on-scroll ───────────────────────────────────────────────────── */
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s, transform 0.8s; }
 .reveal.visible { opacity: 1; transform: none; }
+/* JS-off fallback: without scripting the IntersectionObserver never runs, so
+   .reveal content would stay invisible forever. Force it visible. */
+@media (scripting: none) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   .hero-bg, .marquee-track, .dev-strip-track { animation: none; }

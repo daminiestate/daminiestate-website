@@ -76,8 +76,10 @@
       #loader.loader-hide .loader-inner{transform:none}
     }
   </style>
-  <!-- JS disabled → hide the loader immediately -->
-  <noscript><style>#loader{display:none!important}</style></noscript>
+  <!-- JS disabled: hide the loader AND force reveal-on-scroll content visible
+       (the IntersectionObserver never runs without JS, so .reveal would stay
+       invisible). Belt-and-suspenders with the @media (scripting:none) rule. -->
+  <noscript><style>#loader{display:none!important}.reveal{opacity:1!important;transform:none!important}</style></noscript>
 
   <!-- Loader gate (first-party, CSP-safe, synchronous): adds html.loaded to
        skip the intro instantly on repeat pages in the same visit and when the
