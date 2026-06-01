@@ -129,6 +129,14 @@ for the `535 SmtpClientAuthentication disabled` error, and the GHL workflow +
 ready-to-paste email designs — see **`docs/EMAIL-GHL-SETUP.md`** and
 **`docs/email-templates/`**.
 
+**Lead durability (OPTIONAL upgrade, not yet done):** the forms currently
+degrade gracefully (validate, attempt GHL, email the team on failure). To meet
+the full Orevida "never lose a lead" standard (persist-first to Cloudflare KV +
+retry + durable outbox + replay), the Cloudflare account owner must create a KV
+namespace and bind it as `LEADS_KV`. Step-by-step dashboard instructions (written
+for a non-developer) + the code contract are in
+**`docs/LEAD-DURABILITY-KV-SETUP.md`**. Optional, recommended, purely additive.
+
 ---
 
 ## 5. Form backends (Cloudflare Pages Functions)
