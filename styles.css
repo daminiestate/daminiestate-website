@@ -181,6 +181,16 @@ a { color: inherit; text-decoration: none; }
 .page-hero h1 em { font-style: italic; color: var(--tan2); }
 .page-hero p { font-size: 0.78rem; line-height: 1.9; color: var(--cr-60); max-width: 560px; margin: 18px auto 0; }
 
+/* Image hero (area guides): photo behind a dark scrim, text on top */
+.page-hero--img { position: relative; isolation: isolate; border-bottom: none; overflow: hidden; }
+.page-hero--img .page-hero-bg { position: absolute; inset: 0; z-index: -2; }
+.page-hero--img .page-hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.page-hero--img::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14,12,10,0.55) 0%, rgba(14,12,10,0.72) 100%); }
+.page-hero--img h1 { color: #F5F0E8; }
+.page-hero--img h1 em { color: var(--sand); }
+.page-hero--img .eyebrow { color: var(--sand); }
+.page-hero--img p { color: rgba(245,240,232,0.86); }
+
 /* ── Stats bar ──────────────────────────────────────────────────────────── */
 .stats-bar { background: rgba(245,240,232,0.04); border-top: 1px solid var(--hrlt); border-bottom: 1px solid var(--hrlt); padding: 56px var(--gutter); display: flex; justify-content: center; gap: 0; }
 .stat-item { text-align: center; flex: 1; padding: 0 40px; border-right: 1px solid var(--hrlt); }

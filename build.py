@@ -428,27 +428,33 @@ PAGES = [
 
     {"slug": "areas/business-bay.html", "content": "areas/business-bay", "canonical": "/areas/business-bay",
      "title": "Business Bay Area Guide | Damini Estate",
-     "description": "Buy or invest in Business Bay, Dubai: central canal-side living with strong rental demand. Lifestyle, property types and investment angle."},
+     "description": "Buy or invest in Business Bay, Dubai: central canal-side living with strong rental demand. Lifestyle, property types and investment angle.",
+     "og_image": "/assets/img/area-business-bay.jpg", "preload": ["/assets/img/area-business-bay.jpg"]},
 
     {"slug": "areas/downtown-dubai.html", "content": "areas/downtown-dubai", "canonical": "/areas/downtown-dubai",
      "title": "Downtown Dubai Area Guide | Damini Estate",
-     "description": "Buy or invest in Downtown Dubai: Burj Khalifa, Dubai Mall and trophy addresses that hold value. Lifestyle, property types and investment outlook."},
+     "description": "Buy or invest in Downtown Dubai: Burj Khalifa, Dubai Mall and trophy addresses that hold value. Lifestyle, property types and investment outlook.",
+     "og_image": "/assets/img/area-downtown-dubai.jpg", "preload": ["/assets/img/area-downtown-dubai.jpg"]},
 
     {"slug": "areas/dubai-hills-estate.html", "content": "areas/dubai-hills-estate", "canonical": "/areas/dubai-hills-estate",
      "title": "Dubai Hills Estate Area Guide | Damini Estate",
-     "description": "Buy or invest in Dubai Hills Estate: green, family-first living around a championship golf course. Lifestyle, villas, apartments and growth outlook."},
+     "description": "Buy or invest in Dubai Hills Estate: green, family-first living around a championship golf course. Lifestyle, villas, apartments and growth outlook.",
+     "og_image": "/assets/img/area-dubai-hills-estate.jpg", "preload": ["/assets/img/area-dubai-hills-estate.jpg"]},
 
     {"slug": "areas/palm-jumeirah.html", "content": "areas/palm-jumeirah", "canonical": "/areas/palm-jumeirah",
      "title": "Palm Jumeirah Area Guide | Damini Estate",
-     "description": "Buy or invest on Palm Jumeirah: beachfront apartments and signature villas on Dubai's iconic island. Lifestyle, property types and investment angle."},
+     "description": "Buy or invest on Palm Jumeirah: beachfront apartments and signature villas on Dubai's iconic island. Lifestyle, property types and investment angle.",
+     "og_image": "/assets/img/area-palm-jumeirah.jpg", "preload": ["/assets/img/area-palm-jumeirah.jpg"]},
 
     {"slug": "areas/mbr-city.html", "content": "areas/mbr-city", "canonical": "/areas/mbr-city",
      "title": "MBR City Area Guide | Damini Estate",
-     "description": "Buy or invest in MBR City (Mohammed Bin Rashid City): lagoons, villas and new-build value minutes from Downtown Dubai. Lifestyle and investment outlook."},
+     "description": "Buy or invest in MBR City (Mohammed Bin Rashid City): lagoons, villas and new-build value minutes from Downtown Dubai. Lifestyle and investment outlook.",
+     "og_image": "/assets/img/area-mbr-city.jpg", "preload": ["/assets/img/area-mbr-city.jpg"]},
 
     {"slug": "areas/jvc.html", "content": "areas/jvc", "canonical": "/areas/jvc",
      "title": "JVC (Jumeirah Village Circle) Area Guide | Damini Estate",
-     "description": "Buy or invest in JVC, Dubai: affordable entry and some of the city's strongest rental yields. Lifestyle, property types and investment angle."},
+     "description": "Buy or invest in JVC, Dubai: affordable entry and some of the city's strongest rental yields. Lifestyle, property types and investment angle.",
+     "og_image": "/assets/img/area-jvc.jpg", "preload": ["/assets/img/area-jvc.jpg"]},
 
     {"slug": "privacy.html", "content": "privacy", "canonical": "/privacy", "noindex": True,
      "title": "Privacy Policy | Damini Estate",
