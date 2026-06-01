@@ -209,7 +209,10 @@ loading correctly. Keep it self-contained.
 - **Do not touch the domain's email DNS.** Email runs on Microsoft 365 (MX →
   `*.mail.protection.outlook.com`, plus SPF/autodiscover). It is independent of
   the website. Changing site A/CNAME records does not affect email; do not
-  remove the MX/TXT/autodiscover records.
+  remove the MX/TXT/autodiscover records. ONE known exception/fix: the
+  `autodiscover` record is currently mis-pointed at Cloudflare's proxy (breaks
+  Outlook auto-setup); the correct fix (CNAME → `autodiscover.outlook.com`, DNS
+  only) is documented in **`docs/FIX-OUTLOOK-AUTODISCOVER-DNS.md`**. Dashboard-only.
 - **Do not add a `wrangler.jsonc` / Workers config.** This is a Cloudflare
   **Pages** project. The old auto-generated Workers config + its PR were removed
   intentionally.
