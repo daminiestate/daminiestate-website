@@ -1,27 +1,55 @@
 # Damini Estate
 
-> Damini Estate (Damini Real Estate L.L.C) is a RERA-licensed (License 57358), TruBroker-accredited full-service real estate brokerage based in Business Bay, Dubai, UAE. We help clients buy, sell, rent, and invest in residential, off-plan, and commercial property across Dubai, and support property-linked Golden Visa relocation. Founded and led by Lola Damini.
+> Damini Estate (Damini Real Estate L.L.C) is a RERA-licensed (License 57358), TruBroker-accredited full-service real estate brokerage based in Business Bay, Dubai, UAE. We help clients buy, sell, rent, and invest in residential, off-plan, and commercial property across Dubai, and support property-linked Golden Visa relocation. Founded and led by Lola Damini. The team works in English and Russian and serves overseas buyers remotely.
 
 ## Contact
 - WhatsApp: +971 58 572 0882
 - Email: info@daminiestate.ae
 - Office: Crystal Tower, Office 1102, Business Bay, Dubai, UAE
+- Hours: Monday to Saturday, 9:00 to 19:00 (GST)
 - Listings: https://www.bayut.com/companies/damini-real-estate-108837/
 
 ## Pages
 - [Home](https://daminiestate.ae/): Overview, featured Dubai listings, services, and leadership.
 - [Properties](https://daminiestate.ae/properties/): Curated Dubai listings; each links to its verified Bayut listing for full details and viewings.
-- [Services](https://daminiestate.ae/services/): Residential sales, off-plan investment, commercial real estate, investment advisory, property management, Golden Visa & relocation, plus free mortgage, rental-yield, ROI, and service-charge calculators.
-- [About](https://daminiestate.ae/about/): Company story, values, and credentials.
+- [Services](https://daminiestate.ae/services/): All services plus free mortgage, rental-yield, ROI, and service-charge calculators.
+- [About](https://daminiestate.ae/about/): Company story, values, credentials, and FAQ.
 - [Contact](https://daminiestate.ae/contact/): Enquiry form, WhatsApp, email, office, and FAQ.
-- [Insights](https://daminiestate.ae/insights/): Guides on Dubai property investment.
+- [Insights](https://daminiestate.ae/insights/): Guides on buying and investing in Dubai property.
+- [Areas](https://daminiestate.ae/areas/): Community guides to where to buy and invest in Dubai.
+
+## Services
+- [Residential Sales](https://daminiestate.ae/services/residential-sales/): Buying and selling apartments, townhouses and villas across Dubai.
+- [Off-Plan Investments](https://daminiestate.ae/services/off-plan-investments/): Priority access to launches, payment plans, honest risk and exit assessment.
+- [Commercial Real Estate](https://daminiestate.ae/services/commercial-real-estate/): Offices, retail and commercial assets for occupiers and investors.
+- [Investment Advisory](https://daminiestate.ae/services/investment-advisory/): Data-led yield, ROI, total-cost and exit modelling.
+- [Property Management](https://daminiestate.ae/services/property-management/): Hands-off management for landlords and overseas owners; tenants, Ejari, rent, maintenance.
+- [Golden Visa & Relocation](https://daminiestate.ae/services/golden-visa-relocation/): Qualifying property selection and relocation support for the UAE Golden Visa.
+
+## Area guides (where to buy in Dubai)
+- [Business Bay](https://daminiestate.ae/areas/business-bay/): Central canal district; apartment gross yields roughly 5.7 to 7%, short-let 7 to 8%; avg ~AED 1,580/sqft.
+- [Downtown Dubai](https://daminiestate.ae/areas/downtown-dubai/): Trophy district around the Burj Khalifa; gross yields ~5 to 6.25%; avg ~AED 2,950/sqft; prized for value retention and liquidity.
+- [Dubai Hills Estate](https://daminiestate.ae/areas/dubai-hills-estate/): Green, family villa community around a golf course; gross yields ~5.5 to 7%; stability and appreciation.
+- [Palm Jumeirah](https://daminiestate.ae/areas/palm-jumeirah/): Beachfront trophy island; apartment gross yields ~4.5 to 5.6%; appreciation-led, ~AED 3,100+/sqft.
+- [MBR City](https://daminiestate.ae/areas/mbr-city/): Lagoon-led new-build district near Downtown; gross yields ~5 to 6.5%; ~AED 2,200+/sqft; balanced yield plus growth.
+- [JVC (Jumeirah Village Circle)](https://daminiestate.ae/areas/jvc/): Affordable, high-yield district; gross yields ~6.8 to 8.5%; the go-to for buy-to-let.
 
 ## Insight articles
 - [Off-Plan vs Ready Property in Dubai](https://daminiestate.ae/blog/off-plan-vs-ready-property-dubai/)
 - [Dubai Rental Yields Explained](https://daminiestate.ae/blog/dubai-rental-yields-explained/)
 - [The Dubai Golden Visa Through Property](https://daminiestate.ae/blog/dubai-golden-visa-property/)
+- [Buying Property in Dubai as a Foreigner](https://daminiestate.ae/blog/buying-property-in-dubai-foreigners/)
+- [The Real Cost of Buying Property in Dubai](https://daminiestate.ae/blog/cost-of-buying-property-in-dubai/)
+- [Best Areas for Rental Yield in Dubai (2026)](https://daminiestate.ae/blog/best-areas-rental-yield-dubai/)
+
+## Common questions
+- Can foreigners buy property in Dubai? Yes. Non-residents can buy freehold property in designated areas with full ownership, including apartments, villas and commercial units.
+- How much does buying cost on top of the price? Budget roughly 6 to 7%: the 4% Dubai Land Department transfer fee, plus agency and trustee fees, and mortgage costs if financing.
+- How do you qualify for the UAE Golden Visa through property? A qualifying purchase from around AED 2 million can support a long-term renewable residency visa; rules are set by the UAE government.
+- Which Dubai areas have the highest rental yields? Value districts like JVC lead (roughly 6.8 to 8.5% gross), while trophy areas like Downtown and Palm Jumeirah lean toward appreciation over yield.
 
 ## Notes
 - Languages: English and Russian (in-page toggle).
 - The site links to Bayut for live listing details while an in-house listings platform is finalised.
+- Market figures are indicative ranges for 2026 and are confirmed per property at enquiry.
 - Calculators provide indicative estimates only and are not financial advice.

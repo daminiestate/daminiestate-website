@@ -122,14 +122,29 @@ ORG_JSONLD = json.dumps({
             "email": "info@daminiestate.ae",
             "telephone": "+971585720882",
             "founder": {"@type": "Person", "name": "Lola Damini"},
-            "areaServed": {"@type": "City", "name": "Dubai"},
             "identifier": {"@type": "PropertyValue", "name": "RERA License", "value": "57358"},
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Crystal Tower, Office 1102, Business Bay",
                 "addressLocality": "Dubai",
+                "addressRegion": "Dubai",
                 "addressCountry": "AE"
             },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 25.1855,
+                "longitude": 55.2654
+            },
+            "hasMap": "https://www.google.com/maps/search/?api=1&query=Crystal+Tower+Business+Bay+Dubai",
+            "openingHoursSpecification": [{
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "09:00",
+                "closes": "19:00"
+            }],
+            "priceRange": "$$$",
+            "currenciesAccepted": "AED",
+            "areaServed": {"@type": "City", "name": "Dubai"},
             "knowsAbout": [
                 "Dubai real estate", "off-plan investment", "residential sales",
                 "commercial real estate", "property management", "Golden Visa",
