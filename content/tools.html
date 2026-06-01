@@ -1,0 +1,107 @@
+<section class="page-hero">
+  <p class="eyebrow center" data-en="Investor Tools" data-ru="Инструменты инвестора">Investor Tools</p>
+  <h1 data-en="Dubai Property <em>Calculators</em>" data-ru="Калькуляторы <em>недвижимости Дубая</em>">Dubai Property <em>Calculators</em></h1>
+  <p data-en="Free, instant estimates for the four questions Dubai buyers ask most: mortgage payments, rental yield, ROI and service charges. Indicative only, talk to us for a precise, property-specific analysis." data-ru="Бесплатные мгновенные оценки по четырём главным вопросам покупателей в Дубае: платёж по ипотеке, доходность аренды, ROI и сервисные сборы. Только ориентировочно — для точного расчёта свяжитесь с нами.">Free, instant estimates for the four questions Dubai buyers ask most: mortgage payments, rental yield, ROI and service charges. Indicative only, talk to us for a precise, property-specific analysis.</p>
+</section>
+
+<section class="sec sec-dark">
+  <div class="sec-inner">
+    <div class="calc-wrap reveal">
+      <div class="calc-tabs" role="tablist" aria-label="Investor calculators">
+        <button type="button" class="calc-tab active" data-calc="mortgage" role="tab" aria-selected="true" aria-controls="panel-mortgage" id="tab-mortgage" data-en="Mortgage" data-ru="Ипотека">Mortgage</button>
+        <button type="button" class="calc-tab" data-calc="rental" role="tab" aria-selected="false" aria-controls="panel-rental" id="tab-rental" data-en="Rental Yield" data-ru="Доходность">Rental Yield</button>
+        <button type="button" class="calc-tab" data-calc="roi" role="tab" aria-selected="false" aria-controls="panel-roi" id="tab-roi" data-en="ROI" data-ru="ROI">ROI</button>
+        <button type="button" class="calc-tab" data-calc="service" role="tab" aria-selected="false" aria-controls="panel-service" id="tab-service" data-en="Service Charge" data-ru="Сервисный сбор">Service Charge</button>
+      </div>
+
+      <div class="calc-layout">
+        <div>
+          <!-- Mortgage -->
+          <div class="calc-panel active" id="panel-mortgage" role="tabpanel" aria-labelledby="tab-mortgage">
+            <div class="calc-grid">
+              <div class="calc-field full"><label for="m-price" data-en="Property Price (AED)" data-ru="Цена (AED)">Property Price (AED)</label><input type="number" id="m-price" value="2000000" min="0" step="50000" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="m-dp"><span data-en="Down Payment" data-ru="Первый взнос">Down Payment</span><span class="calc-range-val" id="m-dp-val">20%</span></label><input type="range" id="m-dp" min="20" max="80" value="20" step="5"></div>
+              <div class="calc-field full"><label for="m-rate"><span data-en="Interest Rate" data-ru="Ставка">Interest Rate</span><span class="calc-range-val" id="m-rate-val">4.5%</span></label><input type="range" id="m-rate" min="1" max="10" value="4.5" step="0.1"></div>
+              <div class="calc-field full"><label for="m-term"><span data-en="Term" data-ru="Срок">Term</span><span class="calc-range-val" id="m-term-val">25 yrs</span></label><input type="range" id="m-term" min="5" max="30" value="25" step="1"></div>
+            </div>
+          </div>
+          <!-- Rental yield -->
+          <div class="calc-panel" id="panel-rental" role="tabpanel" aria-labelledby="tab-rental" hidden>
+            <div class="calc-grid">
+              <div class="calc-field full"><label for="y-value" data-en="Property Value (AED)" data-ru="Стоимость (AED)">Property Value (AED)</label><input type="number" id="y-value" value="1500000" min="0" step="50000" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="y-rent" data-en="Monthly Rent (AED)" data-ru="Аренда в месяц (AED)">Monthly Rent (AED)</label><input type="number" id="y-rent" value="9000" min="0" step="500" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="y-vac"><span data-en="Vacancy Allowance" data-ru="Простой">Vacancy Allowance</span><span class="calc-range-val" id="y-vac-val">5%</span></label><input type="range" id="y-vac" min="0" max="30" value="5" step="1"></div>
+              <div class="calc-field full"><label for="y-costs" data-en="Annual Costs (AED)" data-ru="Годовые расходы (AED)">Annual Costs (AED)</label><input type="number" id="y-costs" value="12000" min="0" step="1000" inputmode="numeric"></div>
+            </div>
+          </div>
+          <!-- ROI -->
+          <div class="calc-panel" id="panel-roi" role="tabpanel" aria-labelledby="tab-roi" hidden>
+            <div class="calc-grid">
+              <div class="calc-field full"><label for="r-price" data-en="Purchase Price (AED)" data-ru="Цена покупки (AED)">Purchase Price (AED)</label><input type="number" id="r-price" value="1500000" min="0" step="50000" inputmode="numeric"></div>
+              <div class="calc-field"><label for="r-income" data-en="Annual Income (AED)" data-ru="Годовой доход (AED)">Annual Income (AED)</label><input type="number" id="r-income" value="108000" min="0" step="1000" inputmode="numeric"></div>
+              <div class="calc-field"><label for="r-expenses" data-en="Annual Expenses (AED)" data-ru="Годовые расходы (AED)">Annual Expenses (AED)</label><input type="number" id="r-expenses" value="18000" min="0" step="1000" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="r-growth"><span data-en="Annual Capital Growth" data-ru="Рост капитала в год">Annual Capital Growth</span><span class="calc-range-val" id="r-growth-val">7%</span></label><input type="range" id="r-growth" min="0" max="20" value="7" step="0.5"></div>
+            </div>
+          </div>
+          <!-- Service charge -->
+          <div class="calc-panel" id="panel-service" role="tabpanel" aria-labelledby="tab-service" hidden>
+            <div class="calc-grid">
+              <div class="calc-field full"><label for="s-sqft" data-en="Property Size (sqft)" data-ru="Площадь (sqft)">Property Size (sqft)</label><input type="number" id="s-sqft" value="1000" min="0" step="50" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="s-rate" data-en="Base Rate (AED / sqft)" data-ru="Базовая ставка (AED / sqft)">Base Rate (AED / sqft)</label><input type="number" id="s-rate" value="15" min="0" step="1" inputmode="numeric"></div>
+              <div class="calc-field full"><label for="s-type" data-en="Property Type" data-ru="Тип объекта">Property Type</label>
+                <select id="s-type">
+                  <option value="1" data-en="Apartment (standard)" data-ru="Квартира (стандарт)">Apartment (standard)</option>
+                  <option value="1.4" data-en="Premium / branded tower" data-ru="Премиум / брендовая башня">Premium / branded tower</option>
+                  <option value="0.7" data-en="Villa / townhouse" data-ru="Вилла / таунхаус">Villa / townhouse</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <p class="calc-disclaimer" data-en="Estimates are indicative and for general guidance only. They are not financial advice, a valuation, or an offer. Figures vary by developer, community, lender, and DLD fees. Contact us for a precise analysis." data-ru="Оценки ориентировочные и носят общий характер. Это не финансовая консультация, не оценка и не оферта. Цифры зависят от застройщика, района, банка и сборов DLD. Свяжитесь с нами для точного расчёта.">Estimates are indicative and for general guidance only. They are not financial advice, a valuation, or an offer. Figures vary by developer, community, lender, and DLD fees. Contact us for a precise analysis.</p>
+        </div>
+
+        <!-- Result panel -->
+        <div class="calc-result" aria-live="polite">
+          <span class="calc-result-label" data-en="Estimated Result" data-ru="Расчётный результат">Estimated Result</span>
+          <span class="calc-result-main" id="res-main"></span>
+          <div class="calc-result-rows">
+            <div class="calc-result-row" id="res-row-2"><span class="calc-result-label"></span><span class="calc-result-value" id="res-2"></span></div>
+            <div class="calc-result-row" id="res-row-3"><span class="calc-result-label"></span><span class="calc-result-value" id="res-3"></span></div>
+            <div class="calc-result-row" id="res-row-4"><span class="calc-result-label"></span><span class="calc-result-value" id="res-4"></span></div>
+          </div>
+          <div class="calc-cta">
+            <p data-en="Want exact figures for a specific property?" data-ru="Нужны точные цифры по конкретному объекту?">Want exact figures for a specific property?</p>
+            <a href="/contact/" class="btn-primary u-full" data-en="Get a precise analysis" data-ru="Получить точный расчёт">Get a precise analysis</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec-light">
+  <div class="sec-inner">
+    <div class="prose reveal">
+      <h2 class="sec-h2" data-en="How to use these calculators" data-ru="Как пользоваться калькуляторами">How to use these calculators</h2>
+      <p data-en="These four tools answer the questions we are asked most. The mortgage calculator estimates your monthly payment, total interest and total cost from the price, down payment, rate and term. The rental-yield calculator shows gross and net yield once you account for vacancy and running costs, the gap that catches most first-time investors. The ROI calculator combines cash-on-cash return with capital growth for a fuller picture, and the service-charge estimator gives a rough annual figure by size and property type." data-ru="Эти четыре инструмента отвечают на самые частые вопросы. Калькулятор ипотеки оценивает ежемесячный платёж, общую переплату и полную стоимость по цене, взносу, ставке и сроку. Калькулятор доходности показывает валовую и чистую доходность с учётом простоя и расходов — разрыв, который удивляет начинающих инвесторов. Калькулятор ROI сочетает денежную доходность с ростом капитала, а оценщик сервисного сбора даёт примерную годовую сумму по площади и типу объекта.">These four tools answer the questions we are asked most. The mortgage calculator estimates your monthly payment, total interest and total cost from the price, down payment, rate and term. The rental-yield calculator shows gross and net yield once you account for vacancy and running costs, the gap that catches most first-time investors. The ROI calculator combines cash-on-cash return with capital growth for a fuller picture, and the service-charge estimator gives a rough annual figure by size and property type.</p>
+      <p data-en="They are deliberately simple and indicative. Real numbers depend on the specific building, the lender, the developer payment plan and current DLD fees, which is exactly what we model with you on a real property. Use these to sketch the shape of a deal, then let us pressure-test it." data-ru="Они намеренно простые и ориентировочные. Реальные цифры зависят от конкретного здания, банка, плана оплаты застройщика и текущих сборов DLD — именно это мы моделируем с вами по реальному объекту. Используйте их, чтобы прикинуть сделку, а затем мы проверим её вместе.">They are deliberately simple and indicative. Real numbers depend on the specific building, the lender, the developer payment plan and current DLD fees, which is exactly what we model with you on a real property. Use these to sketch the shape of a deal, then let us pressure-test it.</p>
+    </div>
+    <div class="area-links reveal">
+      <a class="area-link-card" href="/blog/dubai-rental-yields-explained/" data-en="How Dubai rental yields really work" data-ru="Как работает доходность аренды в Дубае">How Dubai rental yields really work</a>
+      <a class="area-link-card" href="/blog/cost-of-buying-property-in-dubai/" data-en="The real cost of buying in Dubai" data-ru="Реальная стоимость покупки в Дубае">The real cost of buying in Dubai</a>
+      <a class="area-link-card" href="/services/investment-advisory/" data-en="Get data-led investment advice" data-ru="Получить инвестиционную консультацию">Get data-led investment advice</a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="reveal">
+    <p class="eyebrow center" data-en="Beyond the estimate" data-ru="Больше, чем оценка">Beyond the estimate</p>
+    <h2 data-en="Ready for the real numbers?" data-ru="Готовы к точным цифрам?">Ready for the real numbers?</h2>
+    <p data-en="Tell us the property or budget you are considering and we'll model the full picture: financing, fees, yield and exit, with no pressure." data-ru="Расскажите об объекте или бюджете, который рассматриваете, и мы смоделируем полную картину: финансирование, сборы, доходность и выход — без давления.">Tell us the property or budget you are considering and we'll model the full picture: financing, fees, yield and exit, with no pressure.</p>
+    <div class="cta-actions">
+      <a href="/contact/" class="btn-primary" data-en="Talk to us" data-ru="Связаться">Talk to us</a>
+      <a href="/insights/" class="btn-ghost" data-en="Read the guides" data-ru="Читать гайды">Read the guides</a>
+    </div>
+  </div>
+</section>

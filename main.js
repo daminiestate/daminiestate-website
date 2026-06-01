@@ -112,6 +112,8 @@
       b.setAttribute('aria-label', lang === 'en' ? 'Switch to Russian' : 'Переключить на английский');
     });
     try { localStorage.setItem('damini-lang', lang); } catch (e) {}
+    // Re-run the active calculator so its result-row labels switch language too.
+    if (typeof window.__dmnRecalc === 'function') window.__dmnRecalc();
   }
   var saved;
   try { saved = localStorage.getItem('damini-lang'); } catch (e) {}
@@ -127,6 +129,14 @@
   function fmt(n) { if (!isFinite(n)) n = 0; return 'AED ' + Math.round(n).toLocaleString('en-US'); }
   function fmtPct(n) { if (!isFinite(n)) n = 0; return n.toFixed(2) + '%'; }
   function setOut(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; }
+  // Bilingual result-row labels: T('Loan Amount') returns the active-language string.
+  var CALC_LABELS = {
+    'Loan Amount': 'Сумма кредита', 'Total Interest': 'Всего процентов', 'Total Cost': 'Полная стоимость',
+    'Gross Rental Yield': 'Валовая доходность', 'Net Annual Income': 'Чистый годовой доход', 'Monthly Income (eff.)': 'Доход в месяц (эфф.)',
+    'Cash-on-Cash ROI': 'Денежная доходность', '5-Year Est. Value': 'Оценка через 5 лет',
+    'Annual Service Charge': 'Годовой сервисный сбор', 'Rate per sqft': 'Ставка за кв. фут', 'Property Size': 'Площадь'
+  };
+  function T(en) { return (document.documentElement.lang === 'ru' && CALC_LABELS[en]) ? CALC_LABELS[en] : en; }
 
   function setResults(main, rows) {
     setOut('res-main', main);
@@ -149,9 +159,9 @@
     var monthly = term === 0 ? 0 : (rate === 0 ? loan / term : loan * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1));
     var totalPaid = monthly * term;
     setResults(fmt(monthly), [
-      { label: 'Loan Amount', val: fmt(loan) },
-      { label: 'Total Interest', val: fmt(totalPaid - loan) },
-      { label: 'Total Cost', val: fmt(totalPaid + price * dp) }
+      { label: T('Loan Amount'), val: fmt(loan) },
+      { label: T('Total Interest'), val: fmt(totalPaid - loan) },
+      { label: T('Total Cost'), val: fmt(totalPaid + price * dp) }
     ]);
   }
   function calcYield() {
@@ -163,9 +173,9 @@
     var eff = grossAnnual * (1 - vac);
     var net = eff - costs;
     setResults(fmtPct((net / value) * 100), [
-      { label: 'Gross Rental Yield', val: fmtPct((grossAnnual / value) * 100) },
-      { label: 'Net Annual Income', val: fmt(net) },
-      { label: 'Monthly Income (eff.)', val: fmt(eff / 12) }
+      { label: T('Gross Rental Yield'), val: fmtPct((grossAnnual / value) * 100) },
+      { label: T('Net Annual Income'), val: fmt(net) },
+      { label: T('Monthly Income (eff.)'), val: fmt(eff / 12) }
     ]);
   }
   function calcROI() {
@@ -176,9 +186,9 @@
     var net = income - expenses;
     var cashROI = (net / price) * 100;
     setResults(fmtPct(cashROI + growth * 100), [
-      { label: 'Cash-on-Cash ROI', val: fmtPct(cashROI) },
-      { label: 'Net Annual Income', val: fmt(net) },
-      { label: '5-Year Est. Value', val: fmt(price * Math.pow(1 + growth, 5)) }
+      { label: T('Cash-on-Cash ROI'), val: fmtPct(cashROI) },
+      { label: T('Net Annual Income'), val: fmt(net) },
+      { label: T('5-Year Est. Value'), val: fmt(price * Math.pow(1 + growth, 5)) }
     ]);
   }
   function calcService() {
@@ -187,9 +197,9 @@
     var mult = val('s-type') || 1;
     var annual = sqft * rate * mult;
     setResults(fmt(annual / 12), [
-      { label: 'Annual Service Charge', val: fmt(annual) },
-      { label: 'Rate per sqft', val: 'AED ' + (rate * mult).toFixed(2) },
-      { label: 'Property Size', val: sqft.toLocaleString('en-US') + ' sqft' }
+      { label: T('Annual Service Charge'), val: fmt(annual) },
+      { label: T('Rate per sqft'), val: 'AED ' + (rate * mult).toFixed(2) },
+      { label: T('Property Size'), val: sqft.toLocaleString('en-US') + ' sqft' }
     ]);
   }
   var CALCS = { mortgage: calcMortgage, rental: calcYield, roi: calcROI, service: calcService };
@@ -213,6 +223,7 @@
     return t ? t.getAttribute('data-calc') : 'mortgage';
   }
   if (calcWrap) {
+    window.__dmnRecalc = function () { var fn = CALCS[activeTab()]; if (fn) fn(); };
     calcWrap.addEventListener('input', function () { var fn = CALCS[activeTab()]; if (fn) fn(); });
     document.querySelectorAll('.calc-tab').forEach(function (btn) {
       btn.addEventListener('click', function () {

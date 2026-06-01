@@ -269,6 +269,16 @@ def page_type_jsonld(canonical: str, title: str, description: str) -> str:
         payload = {"@context": "https://schema.org", "@type": "CollectionPage",
                    "name": name, "url": url, "description": description,
                    "isPartOf": {"@id": f"{SITE}#website"}}
+    elif canonical == "/tools":
+        payload = {"@context": "https://schema.org", "@type": "WebApplication",
+                   "name": name, "url": url, "description": description,
+                   "applicationCategory": "FinanceApplication",
+                   "operatingSystem": "Web browser",
+                   "offers": {"@type": "Offer", "price": "0", "priceCurrency": "AED"},
+                   "featureList": ["Mortgage calculator", "Rental yield calculator",
+                                   "ROI calculator", "Service charge estimator"],
+                   "isPartOf": {"@id": f"{SITE}#website"},
+                   "provider": {"@id": f"{SITE}#org"}}
     if not payload:
         return ""
     return f'<script type="application/ld+json">\n{json.dumps(payload, indent=2)}\n</script>'
@@ -399,6 +409,10 @@ PAGES = [
     {"slug": "services.html", "content": "services", "canonical": "/services",
      "title": "Services & Investor Tools | Damini Estate Dubai",
      "description": "Dubai residential sales, off-plan, commercial, investment advisory, property management and Golden Visa relocation, plus free yield and ROI calculators."},
+
+    {"slug": "tools.html", "content": "tools", "canonical": "/tools",
+     "title": "Dubai Property Calculators | Damini Estate",
+     "description": "Free Dubai property calculators: mortgage payment, rental yield, ROI and service charge. Instant, indicative estimates to plan your purchase or investment."},
 
     {"slug": "services/residential-sales.html", "content": "services/residential-sales", "canonical": "/services/residential-sales",
      "title": "Residential Sales in Dubai | Damini Estate",

@@ -17,6 +17,7 @@
 - [Contact](https://daminiestate.ae/contact/): Enquiry form, WhatsApp, email, office, and FAQ.
 - [Insights](https://daminiestate.ae/insights/): Guides on buying and investing in Dubai property.
 - [Areas](https://daminiestate.ae/areas/): Community guides to where to buy and invest in Dubai.
+- [Tools](https://daminiestate.ae/tools/): Free mortgage, rental-yield, ROI and service-charge calculators for Dubai property.
 
 ## Services
 - [Residential Sales](https://daminiestate.ae/services/residential-sales/): Buying and selling apartments, townhouses and villas across Dubai.
