@@ -531,6 +531,18 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .area-link-card::after { content: "\2192"; margin-left: auto; padding-left: 14px; color: var(--sand); }
 @media (max-width: 860px) { .area-links { grid-template-columns: 1fr; } }
 
+/* ── Team / leadership ──────────────────────────────────────────────────── */
+.team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: stretch; }
+.team-card { border: 1px solid var(--hrlt); background: var(--br); overflow: hidden; display: flex; flex-direction: column; }
+.team-card img { width: 100%; height: 360px; object-fit: cover; object-position: top center; }
+.team-card-body { padding: 26px 28px; }
+.team-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--cr); }
+.team-role { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tan2); margin: 6px 0 14px; }
+.team-bio { font-size: 0.9rem; line-height: 1.75; color: var(--cr-60); }
+.team-join { border: 1px solid var(--hrlt); background: var(--br2); padding: 32px 30px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.team-join .btn-ghost { align-self: flex-start; }
+@media (max-width: 760px) { .team-grid { grid-template-columns: 1fr; } }
+
 /* ── Testimonials ───────────────────────────────────────────────────────── */
 .quote-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 .quote { border: 1px solid var(--hrlt); padding: 32px 28px; background: var(--br); display: flex; flex-direction: column; gap: 16px; }

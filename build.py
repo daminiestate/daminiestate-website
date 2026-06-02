@@ -121,7 +121,15 @@ ORG_JSONLD = json.dumps({
             "description": "Damini Estate is a full-service real estate firm in Dubai, UAE, helping clients buy, sell, rent, and manage residential, off-plan, and commercial property.",
             "email": "info@daminiestate.ae",
             "telephone": "+971585720882",
-            "founder": {"@type": "Person", "name": "Lola Damini"},
+            "founder": {
+                "@type": "Person",
+                "@id": f"{SITE}#lola",
+                "name": "Lola Damini",
+                "jobTitle": "Founder & CEO",
+                "image": f"{SITE}/assets/img/ceo-portrait.jpg",
+                "worksFor": {"@id": f"{SITE}#org"}
+            },
+            "employee": {"@id": f"{SITE}#lola"},
             "identifier": {"@type": "PropertyValue", "name": "RERA License", "value": "57358"},
             "address": {
                 "@type": "PostalAddress",
@@ -413,6 +421,11 @@ PAGES = [
     {"slug": "tools.html", "content": "tools", "canonical": "/tools",
      "title": "Dubai Property Calculators | Damini Estate",
      "description": "Free Dubai property calculators: mortgage payment, rental yield, ROI and service charge. Instant, indicative estimates to plan your purchase or investment."},
+
+    {"slug": "sell.html", "content": "sell", "canonical": "/sell",
+     "title": "Sell Your Dubai Property | Damini Estate",
+     "description": "Sell your Dubai property with Damini Estate: an honest valuation, professional marketing, qualified buyers and a clean DLD transfer. Request a free valuation.",
+     "og_image": "/assets/img/svc-residential-sales.jpg", "preload": ["/assets/img/svc-residential-sales.jpg"]},
 
     {"slug": "services/residential-sales.html", "content": "services/residential-sales", "canonical": "/services/residential-sales",
      "title": "Residential Sales in Dubai | Damini Estate",

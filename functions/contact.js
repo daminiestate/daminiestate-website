@@ -43,6 +43,8 @@ export async function onRequestPost({ request, env, ctx }) {
   const phone = get('phone').slice(0, 32);
   const interest = get('interest').slice(0, 80);
   const message = get('message').slice(0, 3000);
+  const area = get('area').slice(0, 120);                     // /sell valuation: property location
+  const propertyType = get('property_type').slice(0, 40);     // /sell valuation: property type
   if (!name) return json({ ok: false, error: 'name_required' }, 400);
   if (!isEmail(email)) return json({ ok: false, error: 'invalid_email' }, 400);
 
@@ -83,6 +85,8 @@ export async function onRequestPost({ request, env, ctx }) {
         `Email   : ${oneline(email)}`,
         phone ? `Phone   : ${oneline(phone)}` : null,
         interest ? `Interest: ${oneline(interest)}` : null,
+        propertyType ? `Type    : ${oneline(propertyType)}` : null,
+        area ? `Area    : ${oneline(area)}` : null,
         message ? `\nMessage:\n${oneline(message)}` : null,
         `\nPage    : ${oneline(pageUrl)}`,
         visitorCity ? `Location: ${oneline(visitorCity)}${visitorCountry ? ', ' + visitorCountry : ''}` : (visitorCountry ? `Country : ${visitorCountry}` : null),
