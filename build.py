@@ -405,7 +405,7 @@ def build_page(page):
 
 PAGES = [
     {"slug": "index.html", "content": "home", "canonical": "/",
-     "title": "Damini Estate | Dubai Real Estate, Done Right",
+     "title": "Damini Estate | Your Next Chapter in Dubai Real Estate",
      "description": "Damini Estate is a full-service real estate firm in Dubai. Buy, sell, rent, or invest with honest advice, deep market expertise, and results you can trust.",
      "og_image": "/assets/img/og-home.jpg",
      "preload": ["/assets/img/hero-dubai.jpg"]},
