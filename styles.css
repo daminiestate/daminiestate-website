@@ -438,7 +438,7 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 @media (max-width: 980px) {
   .nav-links, .nav-cta { display: none; }
   .nav-toggle { display: flex; }
-  .logo-img { height: 24px; }
+  .logo-img { height: 18px; }
   .split, .split.reverse { grid-template-columns: 1fr; }
   .split.reverse .split-img { order: 0; }
   .prop-grid { grid-template-columns: 1fr 1fr; }
