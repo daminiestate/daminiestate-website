@@ -59,7 +59,7 @@
     #loader .loader-bg{position:absolute;inset:0;z-index:0;background:#0E0C0A url('/assets/img/hero-dubai.jpg') center/cover no-repeat;opacity:0;animation:dmnLoaderBg 2.6s ease .3s forwards,dmnLoaderZoom 12s ease-out .3s forwards}
     #loader .loader-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(14,12,10,.55) 0%,rgba(14,12,10,.9) 70%,#0E0C0A 100%)}
     #loader .loader-inner{position:relative;z-index:1;opacity:0;animation:dmnLoaderIn 1.3s ease .15s forwards}
-    #loader .loader-logo{display:block;height:clamp(38px,7vw,64px);width:auto;margin:0 auto}
+    #loader .loader-d{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(2.4rem,7vw,4.5rem);font-weight:300;letter-spacing:.5em;text-indent:.5em;color:#C9B99A;text-transform:uppercase;line-height:1}
     #loader .loader-e{display:block;margin-top:14px;font-family:'Tenor Sans',system-ui,sans-serif;font-size:clamp(.5rem,1.5vw,.72rem);letter-spacing:.45em;text-indent:.45em;color:rgba(201,185,154,.6);text-transform:uppercase;opacity:0;animation:dmnLoaderFade 1.4s ease .7s forwards}
     #loader .loader-line{display:block;height:1px;width:0;margin:26px auto 0;background:linear-gradient(to right,transparent,#A8895A,transparent);animation:dmnLoaderLine 1.6s ease .6s forwards}
     @keyframes dmnLoaderSafety{to{opacity:0;visibility:hidden;pointer-events:none}}
@@ -93,7 +93,7 @@
 <div id="loader" aria-hidden="true">
   <div class="loader-bg"></div>
   <div class="loader-inner">
-    <img class="loader-logo" src="/assets/img/logo.png" alt="Damini Estate">
+    <span class="loader-d">Damini</span>
     <span class="loader-e">Dubai &middot; Luxury Real Estate</span>
     <span class="loader-line"></span>
   </div>
