@@ -213,9 +213,15 @@ loading correctly. Keep it self-contained.
     in the footer (a `data-consent-open` button).
   - EU/EEA/UK visitors see the banner (`_partials/consent.html`) and nothing loads
     until they accept. Opt-in if `/api/geo` (`functions/api/geo.js`, IP country)
-    says so OR the device timezone is European. `OPT_IN_EVERYWHERE = true` in
+    says so OR the device timezone is European. If `/api/geo` errors, nothing
+    loads and no banner shows on that page. `OPT_IN_EVERYWHERE = true` in
     `tracking.js` switches the banner on for everyone (for example once the UAE
     PDPL executive regulations take effect).
+  - A saved choice records `r` (1 = made with the switches unticked). Opt-in
+    regions only honour `r: 1` or a full reject, because outside the EU the
+    switches start ticked and a pre-ticked box is not valid consent.
+  - The UTM/click-id capture in `main.js` is marketing too: it runs through
+    `dmnTrack.whenAllowed('marketing', ...)`.
   - Categories: `analytics` = Yandex Metrica (counter 111868041, Session Replay);
     `marketing` = GHL page tracking, GHL chat widget, Orevida pixel.
   - To add a tracker: load it inside `loadAnalytics`/`loadMarketing` in

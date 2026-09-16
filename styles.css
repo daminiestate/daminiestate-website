@@ -614,8 +614,9 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .consent-option input[type="checkbox"] {
   appearance: none; -webkit-appearance: none; position: relative; margin: 2px 0 0; flex: none;
   width: 42px; height: 24px; border-radius: 24px; cursor: pointer;
-  background: rgba(245,240,232,0.14); border: 1px solid var(--cr-30); transition: background 0.2s, border-color 0.2s;
+  padding: 0; background: rgba(245,240,232,0.14); border: 1px solid var(--cr-30); transition: background 0.2s, border-color 0.2s;
 }
+.consent-option input[type="checkbox"]:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 .consent-option input[type="checkbox"]::before {
   content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
   background: var(--cr-65); transition: transform 0.2s, background 0.2s;

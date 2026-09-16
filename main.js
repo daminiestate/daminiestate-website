@@ -296,40 +296,45 @@
      Capture on first landing, PERSIST in sessionStorage so the values survive
      internal navigation (a visitor rarely lands and converts on the same page),
      then inject into every lead form. Matches the Orevida capture-and-forward
-     standard so attribution is never dropped on internal nav. */
-  try {
-    var STORE = 'dmn_attr';
-    var map = {
-      h_utm_source: 'utm_source', h_utm_medium: 'utm_medium', h_utm_campaign: 'utm_campaign',
-      h_utm_content: 'utm_content', h_utm_term: 'utm_term',
-      h_fbclid: 'fbclid', h_gclid: 'gclid', h_ttclid: 'ttclid', h_msclkid: 'msclkid', h_li_fat_id: 'li_fat_id'
-    };
+     standard so attribution is never dropped on internal nav.
+     This is marketing tracking, so it only runs once tracking.js allows the
+     marketing category (immediately outside the EU/EEA/UK, after consent inside). */
+  function captureAttribution() {
+    try {
+      var STORE = 'dmn_attr';
+      var map = {
+        h_utm_source: 'utm_source', h_utm_medium: 'utm_medium', h_utm_campaign: 'utm_campaign',
+        h_utm_content: 'utm_content', h_utm_term: 'utm_term',
+        h_fbclid: 'fbclid', h_gclid: 'gclid', h_ttclid: 'ttclid', h_msclkid: 'msclkid', h_li_fat_id: 'li_fat_id'
+      };
 
-    // Load any previously-stored attribution for this session.
-    var attr = {};
-    try { attr = JSON.parse(sessionStorage.getItem(STORE) || '{}') || {}; } catch (e) { attr = {}; }
+      // Load any previously-stored attribution for this session.
+      var attr = {};
+      try { attr = JSON.parse(sessionStorage.getItem(STORE) || '{}') || {}; } catch (e) { attr = {}; }
 
-    // Merge in anything present in the current URL (first-touch wins: don't
-    // overwrite a value already captured earlier this session).
-    var qs = new URLSearchParams(location.search);
-    var changed = false;
-    Object.keys(map).forEach(function (field) {
-      var v = qs.get(map[field]);
-      if (v && !attr[field]) { attr[field] = v.slice(0, 256); changed = true; }
-    });
-    if (changed) { try { sessionStorage.setItem(STORE, JSON.stringify(attr)); } catch (e) {} }
-
-    // Inject whatever we have (URL + persisted) into every lead form.
-    function applyAttr() {
-      document.querySelectorAll('form[data-ajax]').forEach(function (form) {
-        Object.keys(attr).forEach(function (field) {
-          if (!attr[field] || form.querySelector('[name="' + field + '"]')) return;
-          var inp = document.createElement('input');
-          inp.type = 'hidden'; inp.name = field; inp.value = attr[field];
-          form.appendChild(inp);
-        });
+      // Merge in anything present in the current URL (first-touch wins: don't
+      // overwrite a value already captured earlier this session).
+      var qs = new URLSearchParams(location.search);
+      var changed = false;
+      Object.keys(map).forEach(function (field) {
+        var v = qs.get(map[field]);
+        if (v && !attr[field]) { attr[field] = v.slice(0, 256); changed = true; }
       });
-    }
-    applyAttr();
-  } catch (e) {}
+      if (changed) { try { sessionStorage.setItem(STORE, JSON.stringify(attr)); } catch (e) {} }
+
+      // Inject whatever we have (URL + persisted) into every lead form.
+      function applyAttr() {
+        document.querySelectorAll('form[data-ajax]').forEach(function (form) {
+          Object.keys(attr).forEach(function (field) {
+            if (!attr[field] || form.querySelector('[name="' + field + '"]')) return;
+            var inp = document.createElement('input');
+            inp.type = 'hidden'; inp.name = field; inp.value = attr[field];
+            form.appendChild(inp);
+          });
+        });
+      }
+      applyAttr();
+    } catch (e) {}
+  }
+  if (window.dmnTrack && window.dmnTrack.whenAllowed) window.dmnTrack.whenAllowed('marketing', captureAttribution);
 })();

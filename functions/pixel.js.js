@@ -22,10 +22,10 @@
  * inline <script>), the strict CSP (script-src 'self') needs no exception, and
  * events go to '/t' (connect-src 'self'). No t.orevida.com in the CSP at all.
  *
- * GDPR: daminiestate.ae is a UAE business and the site has no consent banner, so
- * the pixel is loaded WITHOUT ?gdpr=1 and tracks immediately (same as Orevida's
- * own UAE properties). To consent-gate later, add gdpr=1 to the upstream URL and
- * the page tag, and the pixel self-gates on the orevida_consent cookie.
+ * Consent: /tracking.js decides whether the pixel loads at all (marketing
+ * category: immediately outside the EU/EEA/UK, after Accept inside it), so the
+ * pixel is loaded WITHOUT ?gdpr=1. Do not add gdpr=1: nothing on this site sets
+ * the orevida_consent cookie the pixel would then wait for, so it would go silent.
  */
 
 const BRAND_KEY = 'ORE-P4PQEYRF2T9D'; // Damini Estate, brands.api_key (db: ogla)

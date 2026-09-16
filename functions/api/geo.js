@@ -9,11 +9,12 @@
  * GDPR-style laws. Everyone else is tracked by default and can opt out under
  * "Cookie settings" in the footer.
  *
- * Cloudflare sets cf-ipcountry at the edge (no lookup, no latency). Unknown (XX)
+ * Cloudflare resolves the country at the edge (request.cf.country, with the
+ * cf-ipcountry header as fallback; no lookup, no latency). Unknown (XX)
  * and Tor (T1) count as opt-in: better to ask one extra visitor than to track
  * someone in the EU without consent.
  *
- * Returns ONLY the flag. Never the country, city or IP.
+ * Returns only the flags. Never the country, city or IP.
  */
 
 const OPT_IN = new Set([
@@ -33,8 +34,10 @@ const OPT_IN = new Set([
 ]);
 
 export function onRequestGet({ request }) {
-  const country = (request.headers.get('cf-ipcountry') || 'XX').toUpperCase();
-  return new Response(JSON.stringify({ optIn: OPT_IN.has(country) }), {
+  const country = String((request.cf && request.cf.country) || request.headers.get('cf-ipcountry') || 'XX').toUpperCase();
+  // `known` only says whether Cloudflare resolved a country, so a zone without
+  // IP geolocation (everyone XX, everyone asked first) is visible from outside.
+  return new Response(JSON.stringify({ optIn: OPT_IN.has(country), known: country !== 'XX' }), {
     headers: {
       'content-type': 'application/json',
       'cache-control': 'no-store',

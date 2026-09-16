@@ -7,18 +7,24 @@
      - Outside the EU/EEA/UK: everything loads immediately, no banner. Visitors
        can switch it off under "Cookie settings" in the footer. Do Not Track and
        Global Privacy Control are deliberately NOT honoured.
-     - EU/EEA/UK and similar (GDPR, ePrivacy/PECR): nothing loads until the
-       visitor accepts. Opt-in if EITHER /api/geo says so (IP country) OR the
-       device timezone is European. If /api/geo fails, the timezone decides.
+     - EU/EEA/UK, a few neighbouring European territories, unknown locations
+       (GDPR, ePrivacy/PECR): nothing loads until the visitor accepts. Opt-in if
+       EITHER /api/geo says so (IP country) OR the device timezone is European.
+     - If /api/geo errors, nothing loads and no banner shows on that page; the
+       next page asks again. A slow answer is still waited for.
      - OPT_IN_EVERYWHERE = true asks every visitor first (for example once the
        UAE PDPL executive regulations take effect).
 
    Categories
      analytics  Yandex Metrica (counter 111868041, Session Replay + field recording)
      marketing  GHL page tracking, GHL chat widget (+ its attribution session and
-                Cloudflare Turnstile), Orevida first-party pixel (/pixel.js)
+                Cloudflare Turnstile), Orevida first-party pixel (/pixel.js), and
+                the UTM/click-id capture in main.js (via dmnTrack.whenAllowed)
 
-   Storage: localStorage "dmn_consent" = {v, pv, analytics, marketing, ts}.
+   Storage: localStorage "dmn_consent" = {v, pv, r, analytics, marketing, ts}.
+     r = 1 when the choice was made with the switches unticked (opt-in rules).
+     Opt-in regions only honour r = 1 choices, or a full reject, so a pre-ticked
+     save made outside the EU never counts as EU consent.
    The region is cached per tab in sessionStorage "dmn_optin".
    Forms call window.dmnTrack.goal(name, {email, lead}) after a successful submit.
    Every host a tracker needs must also be in the CSP in _headers.
@@ -36,6 +42,14 @@
   var GHL_TRACKING_ID = 'tk_68deebfd17d04ed685918c04c98c3e17';
   var GHL_WIDGET_ID = '6a1c59831ce15bb9e9f15747';
 
+  /* ── Opt-out guard ──────────────────────────────────────────────────────
+     Registered before any tracker, so these capture listeners run first. Once
+     an opt-out is being applied, the trackers' own unload/hide handlers (which
+     would send one more event and recreate their ids) are stopped. */
+  var halted = false;
+  function guard(ev) { if (halted) ev.stopImmediatePropagation(); }
+  ['beforeunload', 'pagehide', 'unload', 'visibilitychange'].forEach(function (t) { window.addEventListener(t, guard, true); });
+
   /* ── Region ─────────────────────────────────────────────────────────── */
   // Europe/* counts as opt-in unless listed here as outside the EU/EEA/UK.
   var TZ_OUTSIDE = ['Europe/Moscow', 'Europe/Minsk', 'Europe/Kiev', 'Europe/Kyiv', 'Europe/Uzhgorod',
@@ -43,7 +57,7 @@
     'Europe/Belgrade', 'Europe/Sarajevo', 'Europe/Skopje', 'Europe/Podgorica', 'Europe/Tirane',
     'Europe/Kaliningrad', 'Europe/Samara', 'Europe/Volgograd', 'Europe/Saratov', 'Europe/Ulyanovsk',
     'Europe/Astrakhan', 'Europe/Kirov', 'Europe/Zurich'];
-  // EU/EEA territories whose timezone is not under Europe/*.
+  // European territories (EU/EEA and a few neighbours) whose timezone is not under Europe/*.
   var TZ_OPT_IN = ['Atlantic/Canary', 'Atlantic/Madeira', 'Atlantic/Azores', 'Atlantic/Reykjavik',
     'Atlantic/Faroe', 'Arctic/Longyearbyen', 'Africa/Ceuta', 'Asia/Nicosia', 'Asia/Famagusta',
     'America/Guadeloupe', 'America/Martinique', 'America/Cayenne', 'America/Marigot',
@@ -56,25 +70,22 @@
     return TZ_OPT_IN.indexOf(tz) !== -1;
   }
 
+  // Calls cb(optIn) once the region is known. Never calls it if /api/geo errors.
   function region(cb) {
     if (OPT_IN_EVERYWHERE || europeanTimezone()) return cb(true);
     var cached = null;
     try { cached = sessionStorage.getItem(REGION); } catch (e) {}
     if (cached === '1' || cached === '0') return cb(cached === '1');
-    var settled = false;
-    function done(optIn, cache) {
-      if (settled) return;
-      settled = true;
-      if (cache) { try { sessionStorage.setItem(REGION, optIn ? '1' : '0'); } catch (e) {} }
-      cb(optIn);
-    }
-    var timer = setTimeout(function () { done(false, false); }, 2500);
     try {
       fetch('/api/geo', { credentials: 'omit', cache: 'no-store' })
         .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (d) { clearTimeout(timer); if (d && typeof d.optIn === 'boolean') done(d.optIn, true); else done(false, false); })
-        .catch(function () { clearTimeout(timer); done(false, false); });
-    } catch (e) { clearTimeout(timer); done(false, false); }
+        .then(function (d) {
+          if (!d || typeof d.optIn !== 'boolean') return;
+          try { sessionStorage.setItem(REGION, d.optIn ? '1' : '0'); } catch (e) {}
+          cb(d.optIn);
+        })
+        .catch(function () {});
+    } catch (e) {}
   }
 
   /* ── Choice ─────────────────────────────────────────────────────────── */
@@ -89,16 +100,29 @@
   }
 
   function saveChoice(analytics, marketing) {
-    var c = { v: 1, pv: POLICY_VERSION, analytics: !!analytics, marketing: !!marketing, ts: new Date().toISOString() };
+    var c = { v: 1, pv: POLICY_VERSION, r: state.optIn === false ? 0 : 1,
+      analytics: !!analytics, marketing: !!marketing, ts: new Date().toISOString() };
     try { localStorage.setItem(STORE, JSON.stringify(c)); } catch (e) {}
     return c;
   }
 
-  // null = undecided (opt-in region without a current choice): show the banner.
-  function effective() {
+  // A choice that is valid under opt-in rules, or null.
+  function optInChoice() {
     var c = state.choice;
-    if (state.optIn) return (c && c.pv === POLICY_VERSION) ? c : null;
-    return c || { analytics: true, marketing: true };
+    if (!c || c.pv !== POLICY_VERSION) return null;
+    return (c.r === 1 || (!c.analytics && !c.marketing)) ? c : null;
+  }
+
+  // What may run now. null = undecided (banner) or region unknown (nothing).
+  function effective() {
+    if (state.optIn === null) return null;
+    if (state.optIn) return optInChoice();
+    return state.choice || { analytics: true, marketing: true };
+  }
+
+  function allowed(category) {
+    var e = effective();
+    return !!(e && e[category]);
   }
 
   /* ── Loaders ────────────────────────────────────────────────────────── */
@@ -139,7 +163,9 @@
     });
   }
 
-  function load(e) {
+  var waiters = { analytics: [], marketing: [] };
+
+  function run(e) {
     if (!e) return;
     try {
       if (e.analytics && !state.loaded.analytics) { state.loaded.analytics = true; loadAnalytics(); }
@@ -148,16 +174,21 @@
       state.loaded.marketing = true;
       whenReady(function () { try { loadMarketing(); } catch (err) {} });
     }
+    ['analytics', 'marketing'].forEach(function (cat) {
+      if (!e[cat] || !waiters[cat].length) return;
+      var queue = waiters[cat];
+      waiters[cat] = [];
+      queue.forEach(function (fn) { whenReady(function () { try { fn(); } catch (err) {} }); });
+    });
   }
 
-  // Best effort after an opt-out: drop the first-party cookies and storage of the
-  // categories being switched off (names measured 2026-09-16), then reload so the
-  // running scripts stop. Third-party cookies on yandex.* cannot be removed from here.
+  // First-party cookies and storage per category (names measured 2026-09-16).
+  // Third-party cookies on yandex.* etc. cannot be removed from here.
   var TRACES = {
     analytics: { cookie: /^_ym/, storage: /^_ym/ },
     marketing: {
       cookie: /^(lc_session_|_ore_)/,
-      storage: /^(_ore|v\d+_(contact_session|history|session_history|first_session_event)_)|lead-connecter-text-widget/
+      storage: /^(_ore|ore_sid|_ud$|lc_session_|dmn_attr$|v\d+_(contact_session|history|session_history|first_session_event)_)|lead-connecter-text-widget/
     }
   };
   function clearTraces(category) {
@@ -170,30 +201,55 @@
         document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' + d;
       });
     });
-    try {
-      Object.keys(localStorage).forEach(function (k) { if (t.storage.test(k)) localStorage.removeItem(k); });
-    } catch (e) {}
+    [window.localStorage, window.sessionStorage].forEach(function (store) {
+      try { Object.keys(store).forEach(function (k) { if (t.storage.test(k)) store.removeItem(k); }); } catch (e) {}
+    });
+  }
+
+  // Apply the current choice: clean up what is off, stop the page if something
+  // that is running got switched off, otherwise start what is allowed.
+  function apply() {
+    if (state.optIn === null) return;
+    var e = effective();
+    if (!e) { showBanner(); return; }
+    hideBanner();
+    if (!e.analytics) clearTraces('analytics');
+    if (!e.marketing) clearTraces('marketing');
+    if ((state.loaded.analytics && !e.analytics) || (state.loaded.marketing && !e.marketing)) {
+      halted = true;
+      location.reload();
+      return;
+    }
+    run(e);
   }
 
   /* ── UI: banner, settings dialog, footer link ───────────────────────── */
   var banner, dialog, lastFocus;
+  function el(id) { return document.getElementById(id); }
 
   function showBanner() {
     whenReady(function () {
-      banner = banner || document.getElementById('consentBanner');
-      if (banner) banner.hidden = false;
+      banner = banner || el('consentBanner');
+      if (!banner || !banner.hidden) return;
+      banner.hidden = false;
+      // Keep keyboard focus from sliding under the fixed banner (WCAG 2.4.11).
+      document.documentElement.style.scrollPaddingBottom = (banner.offsetHeight + 24) + 'px';
     });
   }
 
   function hideBanner() {
-    banner = banner || document.getElementById('consentBanner');
-    if (banner) banner.hidden = true;
+    banner = banner || el('consentBanner');
+    if (!banner || banner.hidden) return;
+    banner.hidden = true;
+    document.documentElement.style.scrollPaddingBottom = '';
   }
 
   function openSettings() {
-    dialog = dialog || document.getElementById('consentDialog');
+    dialog = dialog || el('consentDialog');
     if (!dialog) return;
-    var e = effective() || { analytics: false, marketing: false };
+    // Opt-in rules (or region not known yet): switches start from a valid
+    // opt-in choice or unticked, never pre-ticked.
+    var e = state.optIn === false ? effective() : (optInChoice() || { analytics: false, marketing: false });
     var a = dialog.querySelector('input[name="analytics"]');
     var m = dialog.querySelector('input[name="marketing"]');
     if (a) a.checked = !!e.analytics;
@@ -204,34 +260,48 @@
   }
 
   function closeSettings() {
-    if (!dialog) return;
+    dialog = dialog || el('consentDialog');
+    if (!dialog || !dialog.open) return;
     if (typeof dialog.close === 'function') dialog.close();
     else dialog.removeAttribute('open');
   }
 
-  function setChoice(analytics, marketing) {
-    var stopAnalytics = state.loaded.analytics && !analytics;
-    var stopMarketing = state.loaded.marketing && !marketing;
-    state.choice = saveChoice(analytics, marketing);
-    hideBanner();
-    closeSettings();
-    if (stopAnalytics || stopMarketing) {
-      if (stopAnalytics) clearTraces('analytics');
-      if (stopMarketing) clearTraces('marketing');
-      location.reload();
-      return;
+  // Send focus back where it came from, or to <main> if that is now hidden.
+  function restoreFocus() {
+    var t = lastFocus;
+    var gone = !t || !document.contains(t) || (banner && banner.hidden && banner.contains(t)) || (dialog && dialog.contains(t));
+    if (gone) {
+      t = el('main');
+      if (t && !t.hasAttribute('tabindex')) t.setAttribute('tabindex', '-1');
     }
-    load(effective());
+    lastFocus = null;
+    if (t && typeof t.focus === 'function') { try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); } }
   }
 
+  function setChoice(analytics, marketing) {
+    var active = document.activeElement;
+    var fromUi = !!active && ((banner && banner.contains(active)) || (dialog && dialog.contains(active)));
+    if (!lastFocus && fromUi) lastFocus = active;
+    state.choice = saveChoice(analytics, marketing);
+    closeSettings();
+    apply();
+    if (!halted && fromUi) restoreFocus();
+  }
+
+  // Another tab changed the choice, or the page came back from the bfcache.
+  function recheck() {
+    var fresh = readChoice();
+    if (JSON.stringify(fresh) === JSON.stringify(state.choice)) return;
+    state.choice = fresh;
+    apply();
+  }
+  window.addEventListener('storage', function (ev) { if (ev.key === STORE) recheck(); });
+  window.addEventListener('pageshow', function (ev) { if (ev.persisted) recheck(); });
+
   whenReady(function () {
-    banner = document.getElementById('consentBanner');
-    dialog = document.getElementById('consentDialog');
-    if (dialog) {
-      dialog.addEventListener('close', function () {
-        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
-      });
-    }
+    banner = el('consentBanner');
+    dialog = el('consentDialog');
+    if (dialog) dialog.addEventListener('close', function () { if (lastFocus) restoreFocus(); });
     document.addEventListener('click', function (ev) {
       var t = ev.target && ev.target.closest ? ev.target.closest('[data-consent], [data-consent-open]') : null;
       if (!t) return;
@@ -248,15 +318,20 @@
     });
   });
 
-  /* ── Conversions ────────────────────────────────────────────────────── */
+  /* ── API for main.js ────────────────────────────────────────────────── */
   window.dmnTrack = {
+    // Run fn now if the category is allowed, or as soon as it becomes allowed.
+    whenAllowed: function (category, fn) {
+      if (allowed(category)) whenReady(function () { try { fn(); } catch (e) {} });
+      else if (waiters[category]) waiters[category].push(fn);
+    },
     // name: Yandex goal id (create it in Metrica as a "JavaScript event" goal).
     goal: function (name, opts) {
       if (!name) return;
       opts = opts || {};
-      try { if (typeof window.ym === 'function') window.ym(YM_ID, 'reachGoal', name); } catch (e) {}
+      try { if (allowed('analytics') && typeof window.ym === 'function') window.ym(YM_ID, 'reachGoal', name); } catch (e) {}
       try {
-        if (typeof window.ore === 'function') {
+        if (allowed('marketing') && typeof window.ore === 'function') {
           if (opts.lead) window.ore('lead', { type: name, email: opts.email || undefined });
           else window.ore('track', name, {});
         }
@@ -267,8 +342,6 @@
   /* ── Start ──────────────────────────────────────────────────────────── */
   region(function (optIn) {
     state.optIn = optIn;
-    var e = effective();
-    if (e) load(e);
-    else showBanner();
+    apply();
   });
 })();
