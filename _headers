@@ -1,7 +1,16 @@
 # Cloudflare Pages headers for daminiestate.ae
-# Everything is first-party (self-hosted fonts + images, no third-party scripts)
-# EXCEPT the optional GoHighLevel chat widget, which is pre-allowlisted below so
-# it works the moment you paste the embed into _partials/chat-widget.html.
+# Fonts and images are self-hosted. The third parties the CSP allows:
+#   GoHighLevel (LeadConnector): chat widget, its phone field (stcdn), its font
+#     CSS (fonts.bunny.net) and page tracking (link.msgsndr.com).
+#     NOT allowed on purpose: the chat widget's attribution call to
+#     services.msgsndr.com. It records a page visit for every visitor, including
+#     those sending DNT or GPC. Allow it only if the client accepts that and
+#     /privacy says so.
+#   Yandex Metrica: tag.js from mc.yandex.ru. Hits and the Session Replay
+#     websocket go to mc.yandex.com by default, cookie-sync iframes use
+#     mc.yandex.com and mc.yandex.md (non-EU visitors).
+# Cloudflare caps each _headers line at 2,000 characters, so keep the CSP lean.
+# After any CSP change, load the live site and check the console for violations.
 
 /*
   X-Content-Type-Options: nosniff
@@ -12,14 +21,14 @@
   X-XSS-Protection: 0
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://services.leadconnectorhq.com https://link.msgsndr.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com; font-src 'self' https://stcdn.leadconnectorhq.com; img-src 'self' data: https://widgets.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://yandex.ru https://*.yandex.ru; media-src 'self'; connect-src 'self' https://services.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com wss://mc.yandex.ru https://yandex.ru https://*.yandex.ru; frame-src https://widgets.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru; frame-ancestors 'none'; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests; report-uri /api/csp-report;
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://services.leadconnectorhq.com https://link.msgsndr.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://fonts.bunny.net; font-src 'self' https://stcdn.leadconnectorhq.com https://fonts.bunny.net; img-src 'self' data: https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://yandex.ru https://*.yandex.ru; media-src 'self'; connect-src 'self' https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md wss://mc.yandex.ru wss://mc.yandex.com https://yandex.ru https://*.yandex.ru; frame-src https://widgets.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md; frame-ancestors 'none'; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests; report-uri /api/csp-report;
   Cache-Control: public, max-age=0, must-revalidate
 
 # HTML pages: revalidate quickly, serve stale while doing so.
 /
   Cache-Control: public, max-age=600, stale-while-revalidate=86400
 
-# Fonts and images are stable — cache hard.
+# Fonts and images are stable, so cache hard.
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 /assets/img/*
