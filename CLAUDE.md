@@ -200,7 +200,21 @@ loading correctly. Keep it self-contained.
   (`script-src 'self'` + the GHL widget origin). All JS lives in `.js` files.
 - **CSP**: defined in `_headers`. If you add a third-party script/style/iframe
   (e.g. analytics, the GHL chat widget), you must add its origin to the CSP or
-  it will be blocked.
+  it will be blocked. Cloudflare caps each `_headers` line at 2,000 characters.
+  After any CSP change, load the live site and read the console for violations.
+- **Trackers**: `ghl-tracking.js` (GHL page tracking) and `yandex-metrika.js`
+  (Yandex Metrica counter 111868041, with Session Replay) are same-origin
+  loaders that skip loading when the visitor sends DNT or GPC. The Orevida pixel
+  (`/pixel.js`) and the GHL chat widget are NOT gated. Yandex's tag.js loads from
+  `mc.yandex.ru` and sends hits and the Session Replay websocket to
+  `mc.yandex.com` by default, so `connect-src` needs both hosts over https and wss.
+- **Session Replay records form field contents on this counter.** Every input or
+  textarea that holds personal data MUST carry `class="ym-disable-keys"`, which
+  is what masks it (it also keeps the field out of Yandex's hashed contact
+  collection). Add it to any new field.
+- **The chat widget's attribution call (`services.msgsndr.com`) is blocked by the
+  CSP on purpose**: it records a page visit for every visitor, including DNT/GPC
+  ones. Allow it only if the client accepts that and `/privacy` says so.
 
 ---
 
