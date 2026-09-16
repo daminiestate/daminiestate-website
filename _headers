@@ -1,16 +1,17 @@
 # Cloudflare Pages headers for daminiestate.ae
-# Fonts and images are self-hosted. The third parties the CSP allows:
+# Fonts and images are self-hosted. Third parties the CSP allows, all loaded by
+# /tracking.js once consent allows (see its header):
 #   GoHighLevel (LeadConnector): chat widget, its phone field (stcdn), its font
-#     CSS (fonts.bunny.net) and page tracking (link.msgsndr.com).
-#     NOT allowed on purpose: the chat widget's attribution call to
-#     services.msgsndr.com. It records a page visit for every visitor, including
-#     those sending DNT or GPC. Allow it only if the client accepts that and
-#     /privacy says so.
+#     CSS (fonts.bunny.net), its attribution session (services.msgsndr.com), its
+#     anti-spam check (Cloudflare Turnstile, challenges.cloudflare.com: loads when
+#     the chat is opened; blocked, sending most likely fails), and page tracking
+#     (link.msgsndr.com).
 #   Yandex Metrica: tag.js from mc.yandex.ru. Hits and the Session Replay
 #     websocket go to mc.yandex.com by default, cookie-sync iframes use
 #     mc.yandex.com and mc.yandex.md (non-EU visitors).
 # Cloudflare caps each _headers line at 2,000 characters, so keep the CSP lean.
-# After any CSP change, load the live site and check the console for violations.
+# After any CSP change, load the live site and check the console for violations,
+# including after OPENING the chat widget (Turnstile only loads then).
 
 /*
   X-Content-Type-Options: nosniff
@@ -21,7 +22,7 @@
   X-XSS-Protection: 0
   Cross-Origin-Opener-Policy: same-origin
   Cross-Origin-Resource-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://services.leadconnectorhq.com https://link.msgsndr.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://fonts.bunny.net; font-src 'self' https://stcdn.leadconnectorhq.com https://fonts.bunny.net; img-src 'self' data: https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://yandex.ru https://*.yandex.ru; media-src 'self'; connect-src 'self' https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md wss://mc.yandex.ru wss://mc.yandex.com https://yandex.ru https://*.yandex.ru; frame-src https://widgets.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md; frame-ancestors 'none'; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests; report-uri /api/csp-report;
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://services.leadconnectorhq.com https://link.msgsndr.com https://mc.yandex.ru https://mc.yandex.com; style-src 'self' 'unsafe-inline' https://widgets.leadconnectorhq.com https://beta.leadconnectorhq.com https://stcdn.leadconnectorhq.com https://fonts.bunny.net; font-src 'self' https://stcdn.leadconnectorhq.com https://fonts.bunny.net; img-src 'self' data: https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://yandex.ru https://*.yandex.ru; media-src 'self'; connect-src 'self' https://*.leadconnectorhq.com https://services.msgsndr.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md wss://mc.yandex.ru wss://mc.yandex.com https://yandex.ru https://*.yandex.ru; frame-src https://challenges.cloudflare.com https://widgets.leadconnectorhq.com https://*.leadconnectorhq.com https://mc.yandex.ru https://mc.yandex.com https://mc.yandex.md; frame-ancestors 'none'; form-action 'self'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests; report-uri /api/csp-report;
   Cache-Control: public, max-age=0, must-revalidate
 
 # HTML pages: revalidate quickly, serve stale while doing so.
@@ -51,9 +52,7 @@
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 /loader-gate.js
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-/ghl-tracking.js
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-/yandex-metrika.js
+/tracking.js
   Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 /sitemap.xml
