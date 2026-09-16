@@ -269,7 +269,12 @@
       fetch(form.getAttribute('action'), { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
         .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
         .then(function (d) {
-          if (d && d.ok) { show('ok', form.getAttribute('data-ok') || 'Thank you. We will be in touch shortly.'); form.reset(); }
+          if (d && d.ok) {
+            var goal = form.getAttribute('data-goal');
+            if (goal && window.dmnTrack) window.dmnTrack.goal(goal, { email: email ? email.value : '', lead: goal.indexOf('lead_') === 0 });
+            show('ok', form.getAttribute('data-ok') || 'Thank you. We will be in touch shortly.');
+            form.reset();
+          }
           else { show('err', form.getAttribute('data-err') || 'Something went wrong. Please try again or WhatsApp us.'); }
         })
         .catch(function () { show('err', form.getAttribute('data-err') || 'Network error. Please try again or WhatsApp us.'); })

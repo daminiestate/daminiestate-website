@@ -70,10 +70,10 @@ def read_content(name): return (CONTENT / f"{name}.html").read_text(encoding="ut
 HEAD = read("head.html")
 HEADER = read("header.html")
 FOOTER = read("footer.html")
-CHAT = read("chat-widget.html")
+CONSENT = read("consent.html")
 
 # ── Cache-busting for non-hashed static assets ───────────────────────────────
-# styles.css / main.js / loader-gate.js / ghl-tracking.js / yandex-metrika.js are served with a
+# styles.css / main.js / loader-gate.js / tracking.js are served with a
 # short max-age (see _headers); stamp each <link>/<script> ref with ?v=<mtime>
 # so a deploy is never hidden by a stale browser cache. Stamp = file mtime int.
 def _vstamp(name):
@@ -84,27 +84,17 @@ def _vstamp(name):
 
 def apply_asset_versions(html: str) -> str:
     # Reference form in the partials is always a quoted root path, e.g. "/styles.css".
-    for asset in ("styles.css", "main.js", "loader-gate.js", "ghl-tracking.js", "yandex-metrika.js"):
+    for asset in ("styles.css", "main.js", "loader-gate.js", "tracking.js"):
         v = _vstamp(asset)
         html = html.replace(f'"/{asset}"', f'"/{asset}?v={v}"')
     return html
 
 HEAD = apply_asset_versions(HEAD)
 
-# GoHighLevel external page-view / form tracking. Loaded via a same-origin
-# loader (/ghl-tracking.js) that gates on DNT/GPC before injecting the vendor
-# script from link.msgsndr.com (allowlisted in _headers script-src); the tracker
-# then beacons to backend.leadconnectorhq.com (covered by *.leadconnectorhq.com
-# connect-src). Injected once, just before </body>, on every page.
-GHL_TRACKING = apply_asset_versions('<script src="/ghl-tracking.js" defer></script>')
-
-# Orevida Network Pixel (brand "Damini Estate", api_key ORE-P4PQEYRF2T9D in the
-# ogla brands table). Served same-origin from /pixel.js (functions/pixel.js.js),
-# which prepends a shim that rewrites t.orevida.com -> same-origin /t/* (handled
-# by functions/t/[[path]].js). The ?b= key is read client-side by the canonical
-# pixel. All first-party, so the strict CSP needs no change. Injected once,
-# before </body>, on every page.
-ORV_PIXEL = '<script src="/pixel.js?b=ORE-P4PQEYRF2T9D" async></script>'
+# Tracking: /tracking.js (loaded in the head partial) injects GHL page tracking,
+# the GHL chat widget and the Orevida pixel (brand "Damini Estate", api_key
+# ORE-P4PQEYRF2T9D, served first-party by functions/pixel.js.js) once consent
+# allows. No tracker tags are emitted here any more.
 
 # ── RealEstateAgent + WebSite JSON-LD (default for every page) ───────────────
 ORG_JSONLD = json.dumps({
@@ -385,8 +375,8 @@ def build_page(page):
 
     crumb_ui = breadcrumb_ui(page["canonical"], page["title"])
 
-    html = "\n".join([head, header, crumb_ui, '<main id="main">', body, '</main>', FOOTER, CHAT,
-                      GHL_TRACKING, ORV_PIXEL, "</body>\n</html>\n"])
+    html = "\n".join([head, CONSENT, header, crumb_ui, '<main id="main">', body, '</main>', FOOTER,
+                      "</body>\n</html>\n"])
 
     # Substitute global business tokens ({{EMAIL}}, {{WA_LINK}}, …) site-wide.
     html = apply_tokens(html)

@@ -1,0 +1,43 @@
+<!-- Consent banner + settings dialog, driven by /tracking.js (read its header).
+     The banner stays hidden unless the visitor is in an opt-in region and has
+     not chosen yet. Accept and Reject share one button style on purpose: a
+     weaker Reject is a dark pattern. "Cookie settings" in the footer reopens
+     the dialog for every visitor. -->
+<section id="consentBanner" class="consent-banner" aria-labelledby="consentBannerTitle" hidden>
+  <h2 id="consentBannerTitle" class="consent-title" data-en="Your privacy" data-ru="Ваша конфиденциальность">Your privacy</h2>
+  <p class="consent-text" data-en="We use cookies and similar technologies for analytics, including session recordings, and for marketing. They only run if you accept. You can change your choice at any time under Cookie settings." data-ru="Мы используем cookie и похожие технологии для аналитики, включая запись сессий, и для маркетинга. Они работают, только если вы согласитесь. Изменить выбор можно в любой момент в разделе «Настройки cookie».">We use cookies and similar technologies for analytics, including session recordings, and for marketing. They only run if you accept. You can change your choice at any time under Cookie settings.</p>
+  <div class="consent-actions">
+    <button type="button" class="btn-ghost" data-consent="accept" data-en="Accept all" data-ru="Принять все">Accept all</button>
+    <button type="button" class="btn-ghost" data-consent="reject" data-en="Reject all" data-ru="Отклонить все">Reject all</button>
+    <button type="button" class="consent-link" data-consent-open data-en="Settings" data-ru="Настройки">Settings</button>
+  </div>
+</section>
+
+<dialog id="consentDialog" class="consent-dialog" aria-labelledby="consentDialogTitle">
+  <button type="button" class="consent-close" data-consent="close"><span aria-hidden="true">&times;</span><span class="sr-only" data-en="Close" data-ru="Закрыть">Close</span></button>
+  <h2 id="consentDialogTitle" class="consent-title" data-en="Cookie settings" data-ru="Настройки cookie">Cookie settings</h2>
+  <p class="consent-text" data-en="Essential storage, such as your language choice, is always on. Choose what else may run:" data-ru="Необходимое хранение данных, например выбор языка, работает всегда. Выберите, что ещё можно включить:">Essential storage, such as your language choice, is always on. Choose what else may run:</p>
+
+  <label class="consent-option">
+    <input type="checkbox" role="switch" name="analytics">
+    <span class="consent-option-body">
+      <span class="consent-option-name" data-en="Analytics" data-ru="Аналитика">Analytics</span>
+      <span class="consent-option-desc" data-en="Yandex Metrica: page views, clicks, scrolling and session recordings. Personal details typed into our forms are masked." data-ru="Яндекс Метрика: просмотры страниц, клики, прокрутка и записи сессий. Личные данные, введённые в наши формы, скрываются.">Yandex Metrica: page views, clicks, scrolling and session recordings. Personal details typed into our forms are masked.</span>
+    </span>
+  </label>
+
+  <label class="consent-option">
+    <input type="checkbox" role="switch" name="marketing">
+    <span class="consent-option-body">
+      <span class="consent-option-name" data-en="Marketing and live chat" data-ru="Маркетинг и онлайн-чат">Marketing and live chat</span>
+      <span class="consent-option-desc" data-en="Our live chat and our CRM's visit tracking, plus our website developer's analytics: pages visited, the campaign and ad that brought you here, a device identifier, and an email address typed into our forms." data-ru="Онлайн-чат и отслеживание визитов в нашей CRM, а также аналитика разработчика нашего сайта: посещённые страницы, кампания и реклама, которые привели вас на сайт, идентификатор устройства и email, введённый в наши формы.">Our live chat and our CRM's visit tracking, plus our website developer's analytics: pages visited, the campaign and ad that brought you here, a device identifier, and an email address typed into our forms.</span>
+    </span>
+  </label>
+
+  <div class="consent-actions">
+    <button type="button" class="btn-ghost" data-consent="save" data-en="Save choices" data-ru="Сохранить выбор">Save choices</button>
+    <button type="button" class="btn-ghost" data-consent="accept" data-en="Accept all" data-ru="Принять все">Accept all</button>
+    <button type="button" class="btn-ghost" data-consent="reject" data-en="Reject all" data-ru="Отклонить все">Reject all</button>
+  </div>
+  <a class="consent-policy" href="/privacy/" data-en="Privacy policy" data-ru="Политика конфиденциальности">Privacy policy</a>
+</dialog>

@@ -573,3 +573,69 @@ button[disabled] { opacity: 0.6; cursor: progress; }
 .svc-item { text-decoration: none; }
 .svc-item .svc-more { margin-top: auto; padding-top: 8px; font-size: 0.5rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand); opacity: 0; transition: opacity 0.3s; }
 .svc-item:hover .svc-more, .svc-item:focus-visible .svc-more { opacity: 1; }
+
+/* ── Consent banner, settings dialog, footer link (driven by /tracking.js) ─── */
+.consent-banner {
+  position: fixed; right: 24px; bottom: 24px; z-index: 950; max-width: 440px;
+  background: var(--br2); color: var(--cr); border: 1px solid var(--hrlt);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.45); padding: 24px;
+}
+.consent-banner[hidden] { display: none; }
+.consent-title { font-family: var(--serif); font-weight: 400; font-size: 1.35rem; color: var(--cr); margin: 0 0 8px; }
+.consent-text { font-size: 0.82rem; line-height: 1.7; color: var(--cr-65); margin: 0 0 18px; }
+.consent-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.consent-actions .btn-ghost { flex: 1 1 auto; }
+.consent-link {
+  background: none; border: 0; padding: 13px 8px; cursor: pointer; font-family: inherit;
+  font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sand);
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.consent-link:hover { color: var(--cr); }
+
+.consent-dialog {
+  margin: auto; width: calc(100% - 32px); max-width: 560px; max-height: calc(100svh - 32px); overflow: auto;
+  background: var(--br2); color: var(--cr); border: 1px solid var(--hrlt); padding: 32px;
+}
+.consent-dialog::backdrop { background: rgba(14,12,10,0.8); }
+.consent-close {
+  position: absolute; top: 10px; right: 10px; width: 44px; height: 44px; background: none; border: 0;
+  color: var(--cr-65); font-size: 1.6rem; line-height: 1; cursor: pointer;
+}
+.consent-close:hover { color: var(--cr); }
+.consent-dialog .consent-title { padding-right: 40px; }
+.consent-option {
+  display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: start; margin: 0;
+  padding: 16px 0; border-top: 1px solid var(--hrlt); cursor: pointer;
+  font-size: inherit; letter-spacing: normal; text-transform: none; color: inherit;
+}
+.consent-option-body { display: block; }
+.consent-option-name { display: block; font-size: 0.9rem; color: var(--cr); margin-bottom: 4px; }
+.consent-option-desc { display: block; font-size: 0.78rem; line-height: 1.65; color: var(--cr-65); }
+.consent-option input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none; position: relative; margin: 2px 0 0; flex: none;
+  width: 42px; height: 24px; border-radius: 24px; cursor: pointer;
+  background: rgba(245,240,232,0.14); border: 1px solid var(--cr-30); transition: background 0.2s, border-color 0.2s;
+}
+.consent-option input[type="checkbox"]::before {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--cr-65); transition: transform 0.2s, background 0.2s;
+}
+.consent-option input[type="checkbox"]:checked { background: var(--tan2); border-color: var(--sand); }
+.consent-option input[type="checkbox"]:checked::before { transform: translateX(18px); background: var(--cr); }
+.consent-dialog .consent-actions { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--hrlt); }
+.consent-policy { display: inline-block; margin-top: 16px; font-size: 0.78rem; color: var(--sand); text-decoration: underline; text-underline-offset: 4px; }
+
+.footer-link-btn {
+  display: block; background: none; border: 0; padding: 5px 0; cursor: pointer; text-align: left;
+  font-family: inherit; font-size: 0.82rem; color: var(--cr-65); transition: color 0.25s;
+}
+.footer-link-btn:hover { color: var(--cr); }
+
+@media (max-width: 560px) {
+  .consent-banner { left: 12px; right: 12px; bottom: 12px; max-width: none; padding: 20px; }
+  .consent-dialog { padding: 24px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .consent-option input[type="checkbox"], .consent-option input[type="checkbox"]::before { transition: none; }
+}
+@media print { .consent-banner, .consent-dialog { display: none !important; } }

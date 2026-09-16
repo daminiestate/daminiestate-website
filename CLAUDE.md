@@ -31,7 +31,7 @@ plus a styled `/404.html`.
 ## 2. Architecture & build
 
 ```
-_partials/        reusable HTML fragments (head, header, footer, chat-widget)
+_partials/        reusable HTML fragments (head, header, footer, consent)
 content/          per-page unique body HTML (home.html, about.html, …)
 content/blog/     article bodies
 build.py          assembles _partials + content → final HTML at the repo root
@@ -39,7 +39,8 @@ generate-sitemap.py   writes sitemap.xml from build.py's PAGES + ARTICLES
 styles.css        the entire design system (one file)
 main.js           all site JS (nav, calculators, i18n, forms, FAQ, reveal)
 loader-gate.js    the intro-loader controller (see §6)
-functions/        Cloudflare Pages Functions (form backends, see §5)
+tracking.js       ALL analytics/marketing scripts + consent banner logic (see §7)
+functions/        Cloudflare Pages Functions (form backends §5, /api/geo for consent §7)
 assets/fonts/     self-hosted woff2 (Cormorant Garamond + Tenor Sans, latin+cyrillic)
 assets/img/       site images, OG images, developer logos (assets/img/developers/)
 images/           property listing thumbnails (self-hosted from Bayut)
@@ -159,7 +160,9 @@ Security model (identical pattern to the sibling sites):
 
 The front-end posts via `fetch` (see the `form[data-ajax]` handler in
 `main.js`): client-side email validation, honeypot, UTM/click-id capture into
-hidden fields, friendly success/error messaging.
+hidden fields, friendly success/error messaging. On a confirmed success it fires
+the form's `data-goal` (`lead_contact`, `lead_valuation`, `newsletter_signup`)
+as a Yandex Metrica goal and an Orevida pixel event via `window.dmnTrack.goal`.
 
 ---
 
@@ -202,19 +205,34 @@ loading correctly. Keep it self-contained.
   (e.g. analytics, the GHL chat widget), you must add its origin to the CSP or
   it will be blocked. Cloudflare caps each `_headers` line at 2,000 characters.
   After any CSP change, load the live site and read the console for violations.
-- **Trackers**: `ghl-tracking.js` (GHL page tracking) and `yandex-metrika.js`
-  (Yandex Metrica counter 111868041, with Session Replay) are same-origin
-  loaders that skip loading when the visitor sends DNT or GPC. The Orevida pixel
-  (`/pixel.js`) and the GHL chat widget are NOT gated. Yandex's tag.js loads from
-  `mc.yandex.ru` and sends hits and the Session Replay websocket to
-  `mc.yandex.com` by default, so `connect-src` needs both hosts over https and wss.
+- **Tracking + consent (decided by Phil 2026-09-16: track as much as the law
+  allows).** Every analytics/marketing script is loaded by `tracking.js`, never by
+  a tag in the HTML. Read its header before touching tracking.
+  - Outside the EU/EEA/UK everything loads immediately with no banner, and DNT/GPC
+    are deliberately not honoured. Visitors can opt out under "Cookie settings"
+    in the footer (a `data-consent-open` button).
+  - EU/EEA/UK visitors see the banner (`_partials/consent.html`) and nothing loads
+    until they accept. Opt-in if `/api/geo` (`functions/api/geo.js`, IP country)
+    says so OR the device timezone is European. `OPT_IN_EVERYWHERE = true` in
+    `tracking.js` switches the banner on for everyone (for example once the UAE
+    PDPL executive regulations take effect).
+  - Categories: `analytics` = Yandex Metrica (counter 111868041, Session Replay);
+    `marketing` = GHL page tracking, GHL chat widget, Orevida pixel.
+  - To add a tracker: load it inside `loadAnalytics`/`loadMarketing` in
+    `tracking.js`, add its hosts to the CSP, add its cookie/storage names to
+    `TRACES`, and describe it on `/privacy` in the same change.
+  - Accept and Reject must keep the same button style (a weaker Reject is a dark
+    pattern).
+- **CSP facts that bit us.** Yandex's tag.js loads from `mc.yandex.ru` but sends
+  hits and the Session Replay websocket to `mc.yandex.com`, so `connect-src` needs
+  both over https and wss. The GHL chat widget loads Cloudflare Turnstile
+  (`challenges.cloudflare.com`, script-src + frame-src) only when a visitor OPENS
+  the chat. It is the chat's anti-spam check, so with it blocked sending most likely
+  fails (inferred, never tested with a real message): test with the chat open.
 - **Session Replay records form field contents on this counter.** Every input or
-  textarea that holds personal data MUST carry `class="ym-disable-keys"`, which
-  is what masks it (it also keeps the field out of Yandex's hashed contact
+  textarea that holds personal data MUST carry `class="ym-disable-keys"`, which is
+  what masks it (it also keeps the field out of Yandex's hashed contact
   collection). Add it to any new field.
-- **The chat widget's attribution call (`services.msgsndr.com`) is blocked by the
-  CSP on purpose**: it records a page visit for every visitor, including DNT/GPC
-  ones. Allow it only if the client accepts that and `/privacy` says so.
 
 ---
 
